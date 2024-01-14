@@ -1,0 +1,69 @@
+@use "../../styles/global.scss" as *;
+
+.default {
+  cursor: pointer;
+  color: $white;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  justify-content: center;
+  white-space: nowrap;
+  font-size: 1.8rem;
+  font-weight: 600;
+  border-radius: $rounded-sm;
+  transition: all 350ms ease;
+}
+
+.small {
+  padding: 0.4rem 1.2rem;
+}
+
+.medium {
+  padding: 0.8rem 2.8rem;
+}
+
+.large {
+  padding: 1.2rem 5.2rem;
+}
+
+.none {
+  padding: 0;
+}
+
+.fullscreen {
+  width: 100%;
+}
+
+.primary {
+  background: $main;
+  color: $white;
+
+  &:hover {
+    background: rgba($main, 0.6);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background: rgba($main, 0.4);
+  }
+}
+
+.outline {
+  background: inherit;
+  border: 1px solid $main;
+  color: $main;
+
+  &:hover {
+    border: 1px solid rgba(#3e5c76, 0.6);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    border: 1px solid rgba(#3e5c76, 0.4);
+  }
+}
+
+.rounded {
+  border-radius: 50%;
+  padding: 1rem;
+}

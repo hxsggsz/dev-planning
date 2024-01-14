@@ -1,5 +1,13 @@
+import Button from "../components/button/button";
+import Switch from "../components/switch/switch";
+
 function Home() {
-  return <h1>home</h1>;
+  return (
+    <>
+      <Button>teste</Button>
+      <Switch />
+    </>
+  );
 }
 
 export default Home;
