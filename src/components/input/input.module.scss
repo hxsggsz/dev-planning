@@ -1,0 +1,33 @@
+@use "../../styles/global.scss" as *;
+
+.root {
+  border: 2px solid $main;
+  border-radius: $rounded-sm;
+  padding: 0.6rem;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  cursor: text;
+  transition: background 300ms;
+
+  &:focus-within {
+    color: $background;
+    background: rgba($main, 0.4);
+  }
+}
+
+.input {
+  outline: none;
+  border: none;
+  background: none;
+  width: 100%;
+  color: $white;
+
+  &::placeholder {
+    color: rgba($white, 0.6);
+  }
+}
+
+.error {
+  border-color: $red;
+}

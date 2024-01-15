@@ -1,6 +1,19 @@
+import classNames from "classnames";
 import scss from "./input.module.scss";
-import { RootProps } from "./input.types";
+import { InputProps, RootProps } from "./input.types";
 
-export function Root(props: RootProps) {
-  return <label className={scss.root} {...props} />;
+function Root(props: RootProps) {
+  const RootClasses = classNames(props.className, [scss.root], {
+    [scss.error]: props.hasError,
+  });
+  return <label className={RootClasses} {...props} />;
 }
+
+function RealInput(props: InputProps) {
+  return <input className={scss.input} {...props} />;
+}
+
+export default {
+  Root,
+  Input: RealInput,
+};
