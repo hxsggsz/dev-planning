@@ -1,5 +1,4 @@
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   asChild?: boolean;
   rounded?: boolean;
   isLoading?: boolean;

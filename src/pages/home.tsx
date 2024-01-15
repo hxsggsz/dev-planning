@@ -1,11 +1,11 @@
 import Button from "../components/button/button";
-import Switch from "../components/switch/switch";
+import { Root } from "../components/input/input";
 
 function Home() {
   return (
     <>
       <Button>teste</Button>
-      <Switch />
+      <Root>teste</Root>
     </>
   );
 }
