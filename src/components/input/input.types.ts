@@ -3,3 +3,7 @@ export interface RootProps extends React.ComponentProps<"label"> {
 }
 
 export interface InputProps extends React.ComponentProps<"input"> {}
+
+export interface InputErrorprops {
+  errorMessage: string | undefined;
+}

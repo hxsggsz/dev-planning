@@ -9,6 +9,7 @@ function Button({ size = "medium", ...props }: ButtonProps) {
     [scss[size!]]: size,
     [scss.rounded]: props.rounded,
     [scss.primary]: !props.variant,
+    [scss.fullscreen]: props.fullScreen,
     [scss[props.variant!]]: props.variant,
   });
 

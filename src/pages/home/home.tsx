@@ -1,12 +1,15 @@
-import Input from "../components/input/input";
+import CreateRoom from "./components/createRoom/createRoom";
+import scss from "./home.module.scss";
+import { useCreateRoom } from "@/stores/useCreateRoom/useCreateRoom";
 
 function Home() {
+  // TODO: adicionar toast para erros
+  const createRoom = useCreateRoom();
+
   return (
-    <>
-      <Input.Root>
-        <Input.Input placeholder="teste!" />
-      </Input.Root>
-    </>
+    <div className={scss.container}>
+      <CreateRoom handleSubmit={createRoom.createRoom} />
+    </div>
   );
 }
 
