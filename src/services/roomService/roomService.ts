@@ -1,5 +1,5 @@
 import { CreateRoomTypes } from "@/types/createRoom";
-import { supabase } from "../client";
+import { supabase } from "@/services/client";
 
 export class RoomService {
   static async createRoom(room: CreateRoomTypes["room"]) {

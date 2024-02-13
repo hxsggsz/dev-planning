@@ -56,8 +56,8 @@ export const useCreateRoom = create<useCreateRoomTypes>()((set) => ({
       return;
     }
 
-    localStorage.setItem("@me", dataUser.id);
     onSuccess(dataRoom.id);
+    localStorage.setItem("@me", dataUser.id);
 
     set({ error: null, status: "success" });
   },

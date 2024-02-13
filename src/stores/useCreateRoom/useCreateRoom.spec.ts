@@ -2,6 +2,20 @@ import { renderHook, act } from "@testing-library/react";
 import * as zustand from "zustand";
 import { myCustomCreate, storeResetFns } from "../__mocks__/zustand";
 import { useCreateRoom } from "./useCreateRoom";
+import { Database } from "@/services/client.types";
+
+vi.mock("@/services/client", () => ({
+  supabase: {
+    from: vi.fn().mockReturnThis(),
+    insert: vi.fn().mockReturnThis(),
+    select: vi.fn().mockReturnThis(),
+    single: vi.fn().mockReturnValue({
+      data: {
+        id: "mock-id",
+      },
+    }),
+  } as unknown as Database,
+}));
 
 vi.mock("zustand", async () => {
   const zustand = (await vi.importActual("zustand")) as object;
@@ -34,6 +48,54 @@ describe("useCreateRoom", () => {
       const { result } = renderHook(() => useCreateRoom((state) => state));
 
       expect(result.current.error).toBeNull();
+    });
+  });
+
+  describe("when call the store", () => {
+    it("turn status in `success`", async () => {
+      const { result } = renderHook(() => useCreateRoom((state) => state));
+
+      await act(async () =>
+        result.current.createRoom({ room: "test", username: "test" }, () => {}),
+      );
+
+      expect(result.current.status).toBe("success");
+    });
+
+    it("error keep null", async () => {
+      const { result } = renderHook(() => useCreateRoom((state) => state));
+
+      await act(async () =>
+        result.current.createRoom({ room: "test", username: "test" }, () => {}),
+      );
+
+      expect(result.current.error).toBeNull();
+    });
+
+    it("calls the callback function", async () => {
+      const { result } = renderHook(() => useCreateRoom((state) => state));
+
+      const mockSuccess = vi.fn();
+      await act(async () =>
+        result.current.createRoom(
+          { room: "test", username: "test" },
+          mockSuccess,
+        ),
+      );
+
+      expect(mockSuccess).toHaveBeenCalled();
+    });
+
+    it("calls the callback function", async () => {
+      const spyLocalStorage = vi.spyOn(Storage.prototype, "setItem");
+
+      const { result } = renderHook(() => useCreateRoom((state) => state));
+
+      await act(async () =>
+        result.current.createRoom({ room: "test", username: "test" }, () => {}),
+      );
+
+      expect(spyLocalStorage).toHaveBeenCalled();
     });
   });
 });
