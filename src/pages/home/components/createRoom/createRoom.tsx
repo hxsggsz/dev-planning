@@ -28,7 +28,7 @@ function CreateRoom(props: CreateRoomProps) {
   });
 
   return (
-    <form className={scss.form} onSubmit={form.onSubmit}>
+    <form data-testid="form" className={scss.form} onSubmit={form.onSubmit}>
       <h1 className={scss.title}>Dev Planning</h1>
       <Input.Root hasError={!!form.errors?.username}>
         <Input.Input
