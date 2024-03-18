@@ -8,8 +8,8 @@ describe("Button", () => {
   describe("when initialize", () => {
     it("renders everithing correctly", () => {
       render(<Button>test</Button>);
-      const btn = screen.getByRole("button", { name: "test" });
-      expect(btn).toBeVisible();
+      const btnEl = screen.getByRole("button", { name: "test" });
+      expect(btnEl).toBeVisible();
     });
 
     it("should not have basic accessibility issues", async () => {
@@ -23,8 +23,11 @@ describe("Button", () => {
     it("shows the loading icon on screen", async () => {
       render(<Button isLoading>test</Button>);
 
-      const loadingElement = screen.getByTestId(/loading/i);
-      expect(loadingElement).toBeVisible();
+      const loadingEl = screen.getByTestId(/loading/i);
+      const btnEl = screen.queryByRole("button", { name: "test" });
+
+      expect(loadingEl).toBeVisible();
+      expect(btnEl).not.toBeInTheDocument();
     });
   });
 
@@ -36,9 +39,11 @@ describe("Button", () => {
         </Button>,
       );
 
-      const childElement = screen.getByRole("link", { name: "test" });
+      const childEl = screen.getByRole("link", { name: "test" });
+      const btnEl = screen.queryByRole("button", { name: "test" });
 
-      expect(childElement).toBeVisible();
+      expect(childEl).toBeVisible();
+      expect(btnEl).not.toBeInTheDocument();
     });
   });
 
@@ -50,11 +55,11 @@ describe("Button", () => {
         </Button>,
       );
 
-      const textElement = screen.getByText(/test/i);
-      const iconElement = screen.getByTestId(/icon/i);
+      const textEl = screen.getByText(/test/i);
+      const iconEl = screen.getByTestId(/icon/i);
 
-      expect(textElement).toBeVisible();
-      expect(iconElement).toBeVisible();
+      expect(textEl).toBeVisible();
+      expect(iconEl).toBeVisible();
     });
   });
 
@@ -63,8 +68,8 @@ describe("Button", () => {
       const mockFunc = vi.fn();
       render(<Button onClick={mockFunc}>test</Button>);
 
-      const btn = screen.getByRole("button", { name: "test" });
-      userEvent.click(btn);
+      const btnEl = screen.getByRole("button", { name: "test" });
+      userEvent.click(btnEl);
 
       await waitFor(() => {
         expect(mockFunc).toHaveBeenCalledTimes(1);
@@ -75,8 +80,22 @@ describe("Button", () => {
   describe("when button is disabled", () => {
     it("has the correctly aria-disabled value", () => {
       render(<Button disabled>test</Button>);
-      const btn = screen.getByRole("button", { name: "test" });
-      expect(btn).toBeDisabled();
+      const btnEl = screen.getByRole("button", { name: "test" });
+      expect(btnEl).toBeDisabled();
+    });
+
+    it("doesnt calls the onClick function", async () => {
+      const mockFunc = vi.fn();
+      render(
+        <Button disabled onClick={mockFunc}>
+          test
+        </Button>,
+      );
+
+      const btnEl = screen.getByRole("button", { name: "test" });
+      userEvent.click(btnEl);
+
+      expect(mockFunc).not.toHaveBeenCalledTimes(1);
     });
   });
 });

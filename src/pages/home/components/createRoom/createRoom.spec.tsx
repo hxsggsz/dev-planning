@@ -2,7 +2,6 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import CreateRoom from "./createRoom";
 import { CreateRoomProps } from "./createRoom.types";
-import userEvent from "@testing-library/user-event";
 
 const makeSut = ({
   handleSubmit = () => {},

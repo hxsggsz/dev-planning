@@ -34,6 +34,7 @@ function CreateRoom(props: CreateRoomProps) {
         <Input.Input
           name="username"
           onChange={form.handleChange}
+          disabled={form.isSubmitting}
           placeholder="Your best username!"
         />
       </Input.Root>
@@ -43,6 +44,7 @@ function CreateRoom(props: CreateRoomProps) {
         <Input.Input
           name="room"
           onChange={form.handleChange}
+          disabled={form.isSubmitting}
           placeholder="Your best room name!"
         />
       </Input.Root>
