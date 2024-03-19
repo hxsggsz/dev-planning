@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Room from "./pages/room/room";
 import Home from "./pages/home/home";
+import Join from "./pages/join/join";
+import Room from "./pages/room/room";
 import "./styles/base.scss";
 
 function App() {
@@ -12,6 +13,10 @@ function App() {
     {
       path: "/room/:id",
       element: <Room />,
+    },
+    {
+      path: "/room/:id/join",
+      element: <Join />,
     },
   ]);
 

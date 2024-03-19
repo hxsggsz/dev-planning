@@ -1,0 +1,31 @@
+@use "@styles/global.scss" as *;
+
+.wrapper {
+  max-width: 42rem;
+  border: 1px solid $main;
+  background: $main;
+  padding: 1rem;
+  display: flex;
+  border-radius: $rounded-sm;
+  position: fixed;
+  right: 2rem;
+  bottom: 2rem;
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  p {
+    font-size: 1.6rem;
+  }
+
+  .errorInfo {
+    align-items: center;
+    padding: 0 1rem;
+    justify-content: center;
+    display: flex;
+    border-radius: $rounded-lg;
+    background: $background;
+    margin-right: 0.6rem;
+  }
+}

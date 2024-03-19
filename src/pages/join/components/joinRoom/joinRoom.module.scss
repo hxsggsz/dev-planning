@@ -1,0 +1,20 @@
+@use "../../../../styles/global.scss" as *;
+
+.form {
+  display: grid;
+  width: 40%;
+  place-items: center;
+  gap: 1rem;
+
+  .title {
+    color: $main;
+    font-size: clamp(5vw, 3.2rem, 4.2rem);
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 612px) {
+  .form {
+    width: 100%;
+  }
+}
