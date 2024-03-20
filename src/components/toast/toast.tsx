@@ -25,7 +25,7 @@ function Toast({ icon: Icon, ...props }: ToastProps) {
             <p>{props.content}</p>
           </div>
 
-          <Button variant="ghost" size="small">
+          <Button onClick={props.onClose} variant="ghost" size="small">
             <X />
           </Button>
         </motion.div>
