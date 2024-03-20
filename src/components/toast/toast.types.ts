@@ -1,3 +1,5 @@
 export interface ToastProps {
-  shouldShow: boolean;
+  variant: "info" | "success" | "warning" | "error";
+  content: string;
+  icon: React.ElementType;
 }

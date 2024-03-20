@@ -1,26 +1,33 @@
-import { Warning } from "@phosphor-icons/react";
 import scss from "./toast.module.scss";
 import { AnimatePresence, motion } from "framer-motion";
 import { ToastProps } from "./toast.types";
+import classNames from "classnames";
+import { X } from "@phosphor-icons/react";
+import Button from "../button/button";
 
-function Toast(props: ToastProps) {
+function Toast({ icon: Icon, ...props }: ToastProps) {
+  const toastClasses = classNames([scss.wrapper], {
+    [scss[props.variant]]: props.variant,
+  });
+
   return (
     <AnimatePresence>
-      {props.shouldShow && (
+      {props.content && (
         <motion.div
           initial={{ y: 1000 }}
           animate={{ y: 0 }}
           exit={{ x: 1000 }}
           transition={{ type: "tween" }}
-          className={scss.wrapper}
+          className={toastClasses}
         >
-          <div className={scss.errorInfo}>
-            <Warning size={24} />
+          <div className={scss.errorWrapper}>
+            <Icon className={scss.icon} weight="bold" />
+            <p>{props.content}</p>
           </div>
-          <div className={scss.content}>
-            <h1>titulo</h1>
-            <p>Lorem ipsum dolor sit amet,</p>
-          </div>
+
+          <Button variant="ghost" size="small">
+            <X />
+          </Button>
         </motion.div>
       )}
     </AnimatePresence>
