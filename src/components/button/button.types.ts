@@ -4,6 +4,6 @@ export interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   isLoading?: boolean;
   fullScreen?: boolean;
   icon?: React.ReactElement;
-  variant?: "default" | "outline" | "none";
+  variant?: "default" | "outline" | "ghost" | "none";
   size?: "small" | "medium" | "large" | "none";
 }
