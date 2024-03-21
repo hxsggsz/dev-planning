@@ -1,4 +1,4 @@
-import { Variants } from "@/components/toast/toast.types";
+import { ToastProps } from "@/components/toast/toast.types";
 
 export interface ToastProviderProps {
   exitTimer?: number;
@@ -6,7 +6,7 @@ export interface ToastProviderProps {
 }
 
 export type ToastObject = Record<
-  Variants,
+  ToastProps["variant"],
   (content: string, wait?: number) => void
 >;
 

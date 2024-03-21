@@ -1,6 +1,5 @@
-export type Variants = "info" | "success" | "warning" | "error";
 export interface ToastProps {
-  variant: Variants;
+  variant: "info" | "success" | "warning" | "error";
   content: string;
   onClose: () => void;
   icon: React.ElementType;
