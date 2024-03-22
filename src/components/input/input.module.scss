@@ -9,9 +9,10 @@
   width: 100%;
   cursor: text;
   transition: background 300ms;
+  color: $main;
 
   &:focus-within {
-    color: $background;
+    color: $white;
     background: rgba($main, 0.4);
   }
 }

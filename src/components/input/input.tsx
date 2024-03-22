@@ -1,6 +1,9 @@
 import classNames from "classnames";
 import scss from "./input.module.scss";
 import { InputErrorprops, InputProps, RootProps } from "./input.types";
+import { useState } from "react";
+import { Eye, EyeSlash } from "@phosphor-icons/react";
+import Button from "../button/button";
 
 function Root(props: RootProps) {
   const RootClasses = classNames(props.className, [scss.root], {
@@ -10,7 +13,30 @@ function Root(props: RootProps) {
 }
 
 function RealInput(props: InputProps) {
-  return <input className={scss.input} {...props} />;
+  const [isSecret, setIsSecret] = useState(true);
+
+  const toggleSecret = () => setIsSecret((prev) => !prev);
+
+  const renderSecretIcon = () => (
+    <Button variant="none" data-testid="toggle-button" onClick={toggleSecret}>
+      {isSecret ? (
+        <Eye cursor="pointer" size={32} />
+      ) : (
+        <EyeSlash cursor="pointer" size={32} />
+      )}
+    </Button>
+  );
+
+  return (
+    <>
+      <input
+        {...props}
+        className={scss.input}
+        type={isSecret ? "password" : "text"}
+      />
+      {props.isSecret && renderSecretIcon()}
+    </>
+  );
 }
 
 function Error(props: InputErrorprops) {
