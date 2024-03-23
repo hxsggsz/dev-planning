@@ -18,7 +18,12 @@ function RealInput(props: InputProps) {
   const toggleSecret = () => setIsSecret((prev) => !prev);
 
   const renderSecretIcon = () => (
-    <Button variant="none" data-testid="toggle-button" onClick={toggleSecret}>
+    <Button
+      type="button"
+      variant="none"
+      onClick={toggleSecret}
+      data-testid="toggle-button"
+    >
       {isSecret ? (
         <Eye cursor="pointer" size={32} />
       ) : (

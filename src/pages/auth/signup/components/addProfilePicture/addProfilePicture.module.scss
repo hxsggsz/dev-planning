@@ -1,0 +1,52 @@
+@use "@styles/global.scss" as *;
+
+.picture {
+  position: relative;
+  cursor: pointer;
+  background: $white;
+  border-radius: $rounded-sm;
+  display: grid;
+  place-items: center;
+  border: 2px dashed $background;
+  width: 30rem;
+  min-height: 70%;
+  padding: 4rem;
+  color: $background;
+
+  .title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    white-space: nowrap;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .subtitle {
+    cursor: grab;
+    font-size: 1.2rem;
+  }
+
+  .imagePlaceholder {
+    z-index: 9;
+    font-size: 16rem;
+    padding: 1rem;
+    background: $main;
+    border: 2px solid $background;
+    border-radius: $rounded-full;
+  }
+
+  .image {
+    max-width: 50%;
+    border: 2px solid $main;
+    background: $main;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    border-radius: $rounded-full;
+  }
+}
+
+.hidden {
+  display: none;
+}
