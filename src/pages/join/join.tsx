@@ -1,17 +1,18 @@
-import { useToast } from "@/context/toastContext/useToast";
 import JoinRoom from "./components/joinRoom/joinRoom";
-import { useEffect } from "react";
+import { joinRoom } from "@/services/channels/user";
 
 function Join() {
-  const { toast } = useToast();
-
-  useEffect(() => {
-    toast.warning("deu ruim paizao");
-  }, []);
-
   return (
     <main>
-      <JoinRoom handleSubmit={() => {}} />
+      <JoinRoom
+        handleSubmit={(inputs) => {
+          joinRoom.send({
+            type: "broadcast",
+            event: "JOIN_ROOM",
+            payload: { message: inputs.username },
+          });
+        }}
+      />
     </main>
   );
 }
