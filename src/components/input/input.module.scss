@@ -26,7 +26,13 @@
   color: $white;
 
   &::placeholder {
-    color: rgba($white, 0.8);
+    color: $grey;
+  }
+
+  &:focus-within {
+    &::placeholder {
+      color: $white;
+    }
   }
 }
 
