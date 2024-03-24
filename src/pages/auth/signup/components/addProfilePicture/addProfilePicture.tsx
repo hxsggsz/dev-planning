@@ -19,8 +19,8 @@ function AddProfilePicture() {
   const profileMutation = useUser((state) => state.updateProfilePic);
   const uploadProfile = profileMutation(
     () => {
-      navigate("/");
       toast.success("profile picture created successfully");
+      navigate("/");
     },
     (errorMessage) => {
       toast.error(errorMessage);
@@ -73,6 +73,11 @@ function AddProfilePicture() {
     }
   }
 
+  function handleUploadProfile(ev: React.MouseEvent<HTMLButtonElement>) {
+    ev.stopPropagation();
+    uploadProfile(file!);
+  }
+
   return (
     <>
       <h1 className={scss.title}>Add a profile picture</h1>
@@ -83,6 +88,7 @@ function AddProfilePicture() {
         </p>
       </div>
       <button
+        data-testid="dropzone"
         className={scss.picture}
         onDrop={props.handleDrop}
         onClick={handleInputClick}
@@ -96,7 +102,10 @@ function AddProfilePicture() {
             src={URL.createObjectURL(file.item(0)!)}
           />
         ) : (
-          <Image className={scss.imagePlaceholder} />
+          <Image
+            data-testid="image-placeholder"
+            className={scss.imagePlaceholder}
+          />
         )}
 
         <h2 className={scss.title}>click here to add a photo</h2>
@@ -115,22 +124,17 @@ function AddProfilePicture() {
         )}
 
         {file?.length && (
-          <Button
-            onClick={(ev) => {
-              ev.stopPropagation();
-              uploadProfile(file);
-            }}
-            size="small"
-            fullScreen
-          >
-            Submit
+          <Button onClick={handleUploadProfile} size="small" fullScreen>
+            Upload profile picture
           </Button>
         )}
       </button>
+
       <input
         type="file"
         ref={inputRef}
         onChange={onChange}
+        aria-label="file input"
         className={scss.hidden}
       />
     </>
