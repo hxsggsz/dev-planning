@@ -14,9 +14,9 @@ function Toast({ icon: Icon, ...props }: ToastProps) {
     <AnimatePresence>
       {props.content && (
         <motion.div
-          initial={{ y: 1000 }}
+          initial={{ y: 100 }}
           animate={{ y: 0 }}
-          exit={{ x: 1000 }}
+          exit={{ x: 100 }}
           transition={{ type: "tween" }}
           className={toastClasses}
         >
