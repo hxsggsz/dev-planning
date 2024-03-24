@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 
 import PasswordGuide from "./passwordGuide";
 import { PasswordGuideProps } from "./passwordGuide.type";
+import { axe } from "vitest-axe";
 
 const makeSut = ({
   shouldShow = true,
@@ -22,6 +23,12 @@ describe("PasswordGuide", () => {
       expect(screen.getByText(/number/i)).toBeInTheDocument();
       expect(screen.getByText(/special/i)).toBeInTheDocument();
     });
+  });
+
+  it("haves no a11y violations", async () => {
+    const { container } = makeSut({});
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 
   describe("when shouldShow is === false", () => {

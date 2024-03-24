@@ -122,7 +122,7 @@ function SignUpForm(props: SignUpProps) {
             name="confirmPassword"
             onChange={form.handleChange}
             disabled={form.isSubmitting}
-            placeholder="Confirm you password"
+            placeholder="Confirm your password"
           />
         </Input.Root>
         <Input.Error errorMessage={form.errors?.confirmPassword} />
@@ -133,7 +133,7 @@ function SignUpForm(props: SignUpProps) {
           disabled={form.isSubmitting}
           isLoading={form.isSubmitting}
         >
-          Submit
+          Sign Up
         </Button>
       </motion.form>
     </>

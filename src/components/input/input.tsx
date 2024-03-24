@@ -24,6 +24,7 @@ function RealInput(props: InputProps) {
       onClick={toggleSecret}
       data-testid="toggle-button"
       style={{ color: "inherit" }}
+      title={isSecret ? "show password" : "hidde password"}
     >
       {isSecret ? (
         <Eye cursor="pointer" size={32} />
