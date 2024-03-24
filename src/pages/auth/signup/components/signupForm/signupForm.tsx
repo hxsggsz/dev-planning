@@ -6,10 +6,10 @@ import { useForm } from "hxform";
 import { SignUpTypes } from "@/types/auth";
 import { useUser } from "@/stores/useUserStore/useUserStore";
 import { useToast } from "@/context/toastContext/useToast";
-import PasswordGuide from "../passwordGuide/passwordGuide";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { SignUpProps } from "./signupForm.type";
+import PasswordGuide from "./components/passwordGuide/passwordGuide";
 
 function SignUpForm(props: SignUpProps) {
   const [shouldShowGuide, setShouldShowGuide] = useState(false);
