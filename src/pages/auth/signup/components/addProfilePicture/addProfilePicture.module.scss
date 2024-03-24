@@ -1,5 +1,18 @@
 @use "@styles/global.scss" as *;
 
+.title {
+  font-size: 3.2rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.subtitle,
+a {
+  font-size: 2.4rem;
+  text-align: center;
+  color: $grey;
+}
+
 .picture {
   position: relative;
   cursor: pointer;
@@ -8,8 +21,8 @@
   display: grid;
   place-items: center;
   border: 2px dashed $background;
-  width: 30rem;
-  min-height: 70%;
+  width: 100%;
+  min-height: 100%;
   padding: 4rem;
   color: $background;
 
@@ -23,7 +36,7 @@
     }
   }
 
-  .subtitle {
+  .dropInfo {
     cursor: grab;
     font-size: 1.2rem;
   }

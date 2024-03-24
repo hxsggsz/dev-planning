@@ -5,11 +5,27 @@ import { useRef, useState } from "react";
 import { useToast } from "@/context/toastContext/useToast";
 import { validateParams } from "./addProfilePicture.types";
 import Button from "@/components/button/button";
+import { Link, useNavigate } from "react-router-dom";
+import { SUPPORTEDFILES } from "./addProfilePicture.constant";
+import { useUser } from "@/stores/useUserStore/useUserStore";
 
 function AddProfilePicture() {
   const [file, setFile] = useState<FileList>();
 
+  const navigate = useNavigate();
+
   const { toast } = useToast();
+
+  const profileMutation = useUser((state) => state.updateProfilePic);
+  const uploadProfile = profileMutation(
+    () => {
+      navigate("/");
+      toast.success("profile picture created successfully");
+    },
+    (errorMessage) => {
+      toast.error(errorMessage);
+    },
+  );
 
   function validateFiles({ files, maxSize, supportedMedia }: validateParams) {
     return Array.from(files).filter((file) => {
@@ -49,7 +65,7 @@ function AddProfilePicture() {
     const allValidFiles = validateFiles({
       files,
       maxSize: 5,
-      supportedMedia: ["jpg", "jpeg", "png", "webp", "gif"],
+      supportedMedia: SUPPORTEDFILES,
     });
 
     if (allValidFiles.length > 0) {
@@ -59,6 +75,13 @@ function AddProfilePicture() {
 
   return (
     <>
+      <h1 className={scss.title}>Add a profile picture</h1>
+
+      <div className={scss.titleWrapper}>
+        <p className={scss.subtitle}>
+          this is optional, you can skip it <Link to="/">clicking here</Link>
+        </p>
+      </div>
       <button
         className={scss.picture}
         onDrop={props.handleDrop}
@@ -69,19 +92,37 @@ function AddProfilePicture() {
         {file ? (
           <img
             className={scss.image}
-            alt="your image to upload"
+            alt={file.item(0)?.name}
             src={URL.createObjectURL(file.item(0)!)}
           />
         ) : (
           <Image className={scss.imagePlaceholder} />
         )}
+
         <h2 className={scss.title}>click here to add a photo</h2>
-        <p className={scss.subtitle}>or drag and drop a file here!</p>
+        <p className={scss.dropInfo}>or drag and drop a file here!</p>
+
+        <p className={scss.dropInfo}>
+          Files supported:{" "}
+          {SUPPORTEDFILES.map((files, index) => {
+            const lastItem = index === SUPPORTEDFILES.length - 1;
+            return `${files}${lastItem ? "" : ","} `;
+          })}
+        </p>
+
         {props.isDragging && (
           <p className={scss.subtitle}>we got you file, you can drop it now</p>
         )}
+
         {file?.length && (
-          <Button size="small" fullScreen>
+          <Button
+            onClick={(ev) => {
+              ev.stopPropagation();
+              uploadProfile(file);
+            }}
+            size="small"
+            fullScreen
+          >
             Submit
           </Button>
         )}
