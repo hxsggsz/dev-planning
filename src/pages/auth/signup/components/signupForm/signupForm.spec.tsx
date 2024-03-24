@@ -4,12 +4,17 @@ import SignupForm from "./signupForm";
 import { SignUpProps } from "./signupForm.type";
 import { axe } from "vitest-axe";
 import userEvent from "@testing-library/user-event";
+import { BrowserRouter } from "react-router-dom";
 
 const makeSut = ({
   setCurrentStep = vi.fn(),
   ...props
 }: Partial<SignUpProps>) =>
-  render(<SignupForm setCurrentStep={setCurrentStep} {...props} />);
+  render(
+    <BrowserRouter>
+      <SignupForm setCurrentStep={setCurrentStep} {...props} />
+    </BrowserRouter>,
+  );
 
 describe("SignupForm", () => {
   describe("when initialize", () => {

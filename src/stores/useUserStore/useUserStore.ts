@@ -12,6 +12,15 @@ interface useUserTypes {
     onSuccess: (data: User) => void,
     onError: (data: string) => void,
   ) => (inputs: SignUpTypes) => Promise<void>;
+  signIn: (
+    onSuccess: (data: User) => void,
+    onError: (data: string) => void,
+  ) => (inputs: Pick<SignUpTypes, "email" | "password">) => Promise<void>;
+  signOut: (
+    onSuccess: (data: User) => void,
+    onError: (data: string) => void,
+  ) => () => Promise<void>;
+
   updateProfilePic: (
     onSuccess: (data: User) => void,
     onError: (data: string) => void,
@@ -95,9 +104,55 @@ export const useUser = create<useUserTypes>()((set, get) => ({
         return;
       }
 
-      console.log({ userData });
       onSuccess(userData.user!);
       set({ error: null, user: userData.user, status: "success" });
+    };
+  },
+  signIn: (onSuccess, onError) => {
+    set((state) => ({
+      ...state,
+      status: "loading",
+    }));
+
+    return async (inputs) => {
+      const { data: signInData, error: signInError } =
+        await AuthService.signIn(inputs);
+
+      if (signInError) {
+        set((state) => ({
+          ...state,
+          status: "error",
+          error: signInError.message,
+        }));
+        onError(signInError.message);
+        return;
+      }
+
+      onSuccess(signInData.user!);
+      set({ error: null, user: signInData.user, status: "success" });
+    };
+  },
+  signOut: (onSuccess, onError) => {
+    set((state) => ({
+      ...state,
+      status: "loading",
+    }));
+
+    return async () => {
+      const { error } = await AuthService.signOut();
+
+      if (error) {
+        set((state) => ({
+          ...state,
+          status: "error",
+          error: error.message,
+        }));
+        onError(error.message);
+        return;
+      }
+
+      onSuccess(get().user!);
+      set((state) => ({ ...state, error: null, status: "success" }));
     };
   },
 }));

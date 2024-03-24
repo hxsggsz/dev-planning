@@ -10,6 +10,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { SignUpProps } from "./signupForm.type";
 import PasswordGuide from "./components/passwordGuide/passwordGuide";
+import { Link } from "react-router-dom";
 
 function SignUpForm(props: SignUpProps) {
   const [shouldShowGuide, setShouldShowGuide] = useState(false);
@@ -19,7 +20,7 @@ function SignUpForm(props: SignUpProps) {
   const useUserStore = useUser((state) => state.signUp);
   const signUp = useUserStore(
     (data) => {
-      toast.success(`Success, welcome ${data.app_metadata.username}`);
+      toast.success(`Success, welcome ${data.user_metadata.username}`);
       props.setCurrentStep((prev) => ++prev);
     },
     (errorMessage) => {
@@ -136,6 +137,12 @@ function SignUpForm(props: SignUpProps) {
           Sign Up
         </Button>
       </motion.form>
+      <p className={scss.login}>
+        already have a account?{" "}
+        <Link className={scss.login} to="/auth/signin">
+          Log in
+        </Link>
+      </p>
     </>
   );
 }
