@@ -4,12 +4,13 @@ import { InputErrorprops, InputProps, RootProps } from "./input.types";
 import { useState } from "react";
 import { Eye, EyeSlash } from "@phosphor-icons/react";
 import Button from "../button/button";
+import { motion } from "framer-motion";
 
 function Root(props: RootProps) {
-  const RootClasses = classNames(props.className, [scss.root], {
+  const RootClasses = classNames([scss.root], {
     [scss.error]: props.hasError,
   });
-  return <label className={RootClasses} {...props} />;
+  return <motion.label layout className={RootClasses} {...props} />;
 }
 
 function RealInput(props: InputProps) {
