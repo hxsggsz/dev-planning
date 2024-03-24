@@ -38,7 +38,7 @@ function RealInput(props: InputProps) {
       <input
         {...props}
         className={scss.input}
-        type={isSecret ? "password" : "text"}
+        type={isSecret && props.isSecret ? "password" : "text"}
       />
       {props.isSecret && renderSecretIcon()}
     </>
