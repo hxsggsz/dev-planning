@@ -15,11 +15,21 @@ vi.mock("@/services/client", () => {
     return { error: { message: "mock error" } };
   });
 
-  let callCountSignOut = 0;
-  const mockSignOut = vi.fn();
-  mockSignOut.mockImplementation(() => {
-    callCountSignOut++;
-    if (callCountSignOut < 4) {
+  let callcountsignout = 0;
+  const mocksignOut = vi.fn();
+  mocksignOut.mockImplementation(() => {
+    callcountsignout++;
+    if (callcountsignout < 4) {
+      return { error: null };
+    }
+    return { error: { message: "mock error" } };
+  });
+
+  let callcountsignUp = 0;
+  const mocksignUp = vi.fn();
+  mocksignUp.mockImplementation(() => {
+    callcountsignUp++;
+    if (callcountsignUp < 4) {
       return { error: null };
     }
     return { error: { message: "mock error" } };
@@ -29,7 +39,13 @@ vi.mock("@/services/client", () => {
     supabase: {
       auth: {
         signInWithPassword: mockSignIn,
-        signOut: mockSignOut,
+        signOut: mocksignOut,
+        signUp: mocksignUp,
+        updateUser: vi.fn().mockReturnValue({
+          data: {
+            username: "hxsggsz",
+          },
+        }),
       },
     },
   } as unknown as Database;
@@ -290,6 +306,153 @@ describe("useUser", () => {
           const storeFunc = result.current.signOut(successMock, errorMock);
 
           return storeFunc();
+        });
+
+        expect(result.current.user).toBeUndefined();
+      });
+    });
+  });
+
+  describe("when call the signup", () => {
+    describe("and has no error", () => {
+      it("turn status in `success`", async () => {
+        const { result } = renderHook(() => useUser((state) => state));
+
+        const successMock = vi.fn();
+        const errorMock = vi.fn();
+
+        await act(async () => {
+          const storeFunc = result.current.signUp(successMock, errorMock);
+
+          return storeFunc({
+            username: "hxsggsz",
+            confirmPassword: "password",
+            email: "email",
+            password: "password",
+          });
+        });
+
+        expect(successMock).toHaveBeenCalledOnce();
+        expect(result.current.status).toBe("success");
+      });
+
+      it("calls the onSuccess callback", async () => {
+        const { result } = renderHook(() => useUser((state) => state));
+
+        const successMock = vi.fn();
+        const errorMock = vi.fn();
+
+        await act(async () => {
+          const storeFunc = result.current.signUp(successMock, errorMock);
+
+          return storeFunc({
+            username: "hxsggsz",
+            confirmPassword: "password",
+            email: "email",
+            password: "password",
+          });
+        });
+
+        expect(successMock).toHaveBeenCalledOnce();
+      });
+
+      it("error keep null", async () => {
+        const { result } = renderHook(() => useUser((state) => state));
+
+        const successMock = vi.fn();
+        const errorMock = vi.fn();
+
+        await act(async () => {
+          const storeFunc = result.current.signUp(successMock, errorMock);
+
+          return storeFunc({
+            username: "hxsggsz",
+            confirmPassword: "password",
+            email: "email",
+            password: "password",
+          });
+        });
+
+        expect(result.current.error).toBeNull();
+      });
+    });
+
+    describe("and has errors", () => {
+      it("turn status into `Error`", async () => {
+        const { result } = renderHook(() => useUser((state) => state));
+
+        const successMock = vi.fn();
+        const errorMock = vi.fn();
+
+        await act(async () => {
+          const storeFunc = result.current.signUp(successMock, errorMock);
+
+          return storeFunc({
+            username: "hxsggsz",
+            confirmPassword: "password",
+            email: "email",
+            password: "password",
+          });
+        });
+
+        expect(result.current.status).toBe("error");
+      });
+
+      it("calls thge onError callback", async () => {
+        const { result } = renderHook(() => useUser((state) => state));
+
+        const successMock = vi.fn();
+        const errorMock = vi.fn();
+
+        await act(async () => {
+          const storeFunc = result.current.signUp(successMock, errorMock);
+
+          return storeFunc({
+            username: "hxsggsz",
+            confirmPassword: "password",
+            email: "email",
+            password: "password",
+          });
+        });
+
+        expect(errorMock).toHaveBeenCalledOnce();
+      });
+
+      it("updates the error value", async () => {
+        const { result } = renderHook(() => useUser((state) => state));
+
+        const successMock = vi.fn();
+        const errorMock = vi.fn();
+
+        await act(async () => {
+          const storeFunc = result.current.signUp(successMock, errorMock);
+
+          return await storeFunc({
+            username: "hxsggsz",
+            confirmPassword: "password",
+            email: "email",
+            password: "password",
+          });
+        });
+
+        expect(result.current.error).toMatch("mock error");
+      });
+
+      it("user keeps null", async () => {
+        const { result } = renderHook(() => useUser((state) => state));
+
+        const successMock = vi.fn();
+        const errorMock = vi.fn();
+
+        await act(async () => {
+          const storeFunc = result.current.signUp(successMock, errorMock);
+
+          return storeFunc({
+            username: "hxsggsz",
+            confirmPassword: "password",
+            email: "email",
+            password: "password",
+          });
         });
 
         expect(result.current.user).toBeUndefined();
