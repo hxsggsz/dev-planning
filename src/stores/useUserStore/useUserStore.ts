@@ -1,6 +1,7 @@
 import { AuthService } from "@/services/authService/authService";
 import { UserService } from "@/services/userService/userService";
 import { SignUpTypes } from "@/types/auth";
+import { MutationTypes } from "@/types/mutation";
 import { User } from "@supabase/supabase-js";
 import { create } from "zustand";
 
@@ -8,25 +9,11 @@ interface useUserTypes {
   user: User | null;
   error: string | null;
   status: "idle" | "error" | "loading" | "success";
-  signUp: (
-    onSuccess: (data: User) => void,
-    onError: (data: string) => void,
-  ) => (inputs: SignUpTypes) => Promise<void>;
-  signIn: (
-    onSuccess: (data: User) => void,
-    onError: (data: string) => void,
-  ) => (inputs: Pick<SignUpTypes, "email" | "password">) => Promise<void>;
-  signOut: (
-    onSuccess: (data: User) => void,
-    onError: (data: string) => void,
-  ) => () => Promise<void>;
-
-  updateProfilePic: (
-    onSuccess: (data: User) => void,
-    onError: (data: string) => void,
-  ) => (pictureLink: FileList) => Promise<void>;
+  signUp: MutationTypes<User, SignUpTypes>;
+  signIn: MutationTypes<User, Pick<SignUpTypes, "email" | "password">>;
+  signOut: MutationTypes<User>;
+  updateProfilePic: MutationTypes<User, FileList>;
 }
-
 export const useUser = create<useUserTypes>()((set, get) => ({
   user: null,
   error: null,
@@ -38,7 +25,7 @@ export const useUser = create<useUserTypes>()((set, get) => ({
     }));
 
     return async (inputs) => {
-      const { error: signUpError } = await AuthService.signUp(inputs);
+      const { error: signUpError } = await AuthService.signUp(inputs!);
 
       if (signUpError) {
         set((state) => ({
@@ -51,7 +38,7 @@ export const useUser = create<useUserTypes>()((set, get) => ({
       }
 
       const { data: userData, error: userError } =
-        await UserService.updateUsername(inputs.username);
+        await UserService.updateUsername(inputs!.username);
 
       if (userError) {
         set((state) => ({
@@ -77,7 +64,7 @@ export const useUser = create<useUserTypes>()((set, get) => ({
       const fileName = `${get().user?.id}/${fileToUpload?.item(0)?.name.replace(/[^a-zA-Z0-9]/g, "")}-${new Date().toLocaleDateString().replace(/[^a-zA-Z0-9]/g, "-")}`;
 
       const { data: uploadData, error: uploadError } =
-        await UserService.uploadFile(fileName, fileToUpload);
+        await UserService.uploadFile(fileName, fileToUpload!);
 
       if (uploadError) {
         set((state) => ({
@@ -115,8 +102,9 @@ export const useUser = create<useUserTypes>()((set, get) => ({
     }));
 
     return async (inputs) => {
-      const { data: signInData, error: signInError } =
-        await AuthService.signIn(inputs);
+      const { data: signInData, error: signInError } = await AuthService.signIn(
+        inputs!,
+      );
 
       if (signInError) {
         set((state) => ({
