@@ -9,6 +9,7 @@ interface useUserTypes {
   user: User | null;
   error: string | null;
   status: "idle" | "error" | "loading" | "success";
+  updateUser: MutationTypes<User>;
   signUp: MutationTypes<User, SignUpTypes>;
   signIn: MutationTypes<User, Pick<SignUpTypes, "email" | "password">>;
   signOut: MutationTypes<User>;
@@ -18,6 +19,27 @@ export const useUser = create<useUserTypes>()((set, get) => ({
   user: null,
   error: null,
   status: "idle" as const,
+  updateUser: (onSuccess, onError) => {
+    return async () => {
+      const { data, error } = await UserService.getUser();
+
+      if (error) {
+        set((state) => ({
+          ...state,
+          status: "error",
+          error: error.message,
+        }));
+        onError(error.message);
+        return;
+      }
+
+      set((state) => ({
+        ...state,
+        user: data.user,
+      }));
+      onSuccess(data.user!);
+    };
+  },
   signUp: (onSuccess, onError) => {
     set((state) => ({
       ...state,
@@ -25,7 +47,7 @@ export const useUser = create<useUserTypes>()((set, get) => ({
     }));
 
     return async (inputs) => {
-      const { error: signUpError } = await AuthService.signUp(inputs!);
+      const { error: signUpError } = await AuthService.signUp(inputs);
 
       if (signUpError) {
         set((state) => ({
@@ -38,7 +60,7 @@ export const useUser = create<useUserTypes>()((set, get) => ({
       }
 
       const { data: userData, error: userError } =
-        await UserService.updateUsername(inputs!.username);
+        await UserService.updateUsername(inputs.username);
 
       if (userError) {
         set((state) => ({
@@ -50,7 +72,7 @@ export const useUser = create<useUserTypes>()((set, get) => ({
         return;
       }
 
-      onSuccess(userData.user!);
+      onSuccess(userData.user);
       set({ error: null, user: userData.user, status: "success" });
     };
   },
@@ -64,7 +86,7 @@ export const useUser = create<useUserTypes>()((set, get) => ({
       const fileName = `${get().user?.id}/${fileToUpload?.item(0)?.name.replace(/[^a-zA-Z0-9]/g, "")}-${new Date().toLocaleDateString().replace(/[^a-zA-Z0-9]/g, "-")}`;
 
       const { data: uploadData, error: uploadError } =
-        await UserService.uploadFile(fileName, fileToUpload!);
+        await UserService.uploadFile(fileName, fileToUpload);
 
       if (uploadError) {
         set((state) => ({
@@ -91,7 +113,7 @@ export const useUser = create<useUserTypes>()((set, get) => ({
         return;
       }
 
-      onSuccess(userData.user!);
+      onSuccess(userData.user);
       set({ error: null, user: userData.user, status: "success" });
     };
   },
@@ -102,9 +124,8 @@ export const useUser = create<useUserTypes>()((set, get) => ({
     }));
 
     return async (inputs) => {
-      const { data: signInData, error: signInError } = await AuthService.signIn(
-        inputs!,
-      );
+      const { data: signInData, error: signInError } =
+        await AuthService.signIn(inputs);
 
       if (signInError) {
         set((state) => ({
@@ -116,7 +137,7 @@ export const useUser = create<useUserTypes>()((set, get) => ({
         return;
       }
 
-      onSuccess(signInData.user!);
+      onSuccess(signInData.user);
       set({ error: null, user: signInData.user, status: "success" });
     };
   },

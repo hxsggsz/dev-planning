@@ -1,21 +1,7 @@
-import { CreateRoomTypes } from "@/types/createRoom";
 import { supabase } from "../client";
 import { SignUpTypes } from "@/types/auth";
 
 export class UserService {
-  static async createUser(
-    username: CreateRoomTypes["username"],
-    roomId: string,
-  ) {
-    const response = await supabase
-      .from("user")
-      .insert({ name: username, id: roomId, role: "ADMIN" })
-      .select()
-      .single();
-
-    return response;
-  }
-
   static async updateUsername(username: SignUpTypes["username"]) {
     const response = await supabase.auth.updateUser({
       data: {
@@ -44,6 +30,12 @@ export class UserService {
         profilePic,
       },
     });
+
+    return response;
+  }
+
+  static async getUser() {
+    const response = await supabase.auth.getUser();
 
     return response;
   }

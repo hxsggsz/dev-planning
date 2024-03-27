@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/context/toastContext/useToast";
 import { useCreateRoom } from "@/stores/useCreateRoom/useCreateRoom";
 import { useUser } from "@/stores/useUserStore/useUserStore";
+import Switch from "@/components/switch/switch";
 
 function CreateRoom() {
   const { toast } = useToast();
@@ -14,7 +15,7 @@ function CreateRoom() {
   const navigate = useNavigate();
 
   const userId = useUser((state) => state.user)?.id;
-  console.log(userId);
+
   const createRoom = useCreateRoom((state) => state.createRoom);
   const createRoomMutation = createRoom(
     (roomId) => {
@@ -29,6 +30,7 @@ function CreateRoom() {
   const form = useForm<CreateRoomTypes>({
     defaultValues: {
       room: "",
+      isPublic: true,
     },
     validation: (inputs, errors) => {
       if (inputs.room.length < 3 || inputs.room.length > 30) {
@@ -36,7 +38,7 @@ function CreateRoom() {
       }
     },
     handleSubmit: (inputs) =>
-      createRoomMutation({ room: inputs.room, userId: userId ?? "" }),
+      createRoomMutation({ ...inputs, userId: userId ?? "" }),
   });
 
   return (
@@ -52,6 +54,14 @@ function CreateRoom() {
       </Input.Root>
       <Input.Error errorMessage={form.errors?.room} />
 
+      <label className={scss.switchLabel}>
+        <p>Is Room public?</p>
+        <Switch
+          name="isPublic"
+          onChange={form.handleChange}
+          checked={form.inputs.isPublic}
+        />
+      </label>
       <Button
         fullScreen
         type="submit"

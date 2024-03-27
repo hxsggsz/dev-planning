@@ -17,8 +17,8 @@ export const useCreateRoom = create<useCreateRoomTypes>()((set) => ({
   createRoom: (onSuccess, onError) => {
     return async (inputs) => {
       const { data: dataRoom, error: errorRoom } = await RoomService.createRoom(
-        inputs!.room,
-        inputs!.userId,
+        { ...inputs },
+        inputs.userId,
       );
 
       if (errorRoom) {
