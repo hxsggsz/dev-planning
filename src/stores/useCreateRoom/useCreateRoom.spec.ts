@@ -55,19 +55,32 @@ describe("useCreateRoom", () => {
     it("turn status in `success`", async () => {
       const { result } = renderHook(() => useCreateRoom((state) => state));
 
-      await act(async () =>
-        result.current.createRoom({ room: "test", username: "test" }, () => {}),
-      );
+      await act(async () => {
+        const succesMock = vi.fn();
+        const errorMock = vi.fn();
+        const createRoomMutation = result.current.createRoom(
+          succesMock,
+          errorMock,
+        );
 
+        return createRoomMutation({ room: "test", userId: "test" });
+      });
       expect(result.current.status).toBe("success");
     });
 
     it("error keep null", async () => {
       const { result } = renderHook(() => useCreateRoom((state) => state));
 
-      await act(async () =>
-        result.current.createRoom({ room: "test", username: "test" }, () => {}),
-      );
+      await act(async () => {
+        const succesMock = vi.fn();
+        const errorMock = vi.fn();
+        const createRoomMutation = result.current.createRoom(
+          succesMock,
+          errorMock,
+        );
+
+        return createRoomMutation({ room: "test", userId: "test" });
+      });
 
       expect(result.current.error).toBeNull();
     });
@@ -75,27 +88,18 @@ describe("useCreateRoom", () => {
     it("calls the callback function", async () => {
       const { result } = renderHook(() => useCreateRoom((state) => state));
 
-      const mockSuccess = vi.fn();
-      await act(async () =>
-        result.current.createRoom(
-          { room: "test", username: "test" },
-          mockSuccess,
-        ),
-      );
+      const succesMock = vi.fn();
+      const errorMock = vi.fn();
 
-      expect(mockSuccess).toHaveBeenCalled();
-    });
+      await act(async () => {
+        const createRoomMutation = result.current.createRoom(
+          succesMock,
+          errorMock,
+        );
 
-    it("calls the callback function", async () => {
-      const spyLocalStorage = vi.spyOn(Storage.prototype, "setItem");
-
-      const { result } = renderHook(() => useCreateRoom((state) => state));
-
-      await act(async () =>
-        result.current.createRoom({ room: "test", username: "test" }, () => {}),
-      );
-
-      expect(spyLocalStorage).toHaveBeenCalled();
+        return createRoomMutation({ room: "test", userId: "test" });
+      });
+      expect(succesMock).toHaveBeenCalled();
     });
   });
 });

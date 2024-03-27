@@ -7,7 +7,7 @@ import { axe } from "vitest-axe";
 describe("Switch", () => {
   describe("when initialize", () => {
     it("renders the switch off when checked={false}", () => {
-      render(<Switch checked={false} setChecked={() => {}} />);
+      render(<Switch checked={false} />);
 
       const switchComponent = screen.getByRole("switch");
 
@@ -16,7 +16,7 @@ describe("Switch", () => {
     });
 
     it("renders the switch on when checked={true}", () => {
-      render(<Switch checked={true} setChecked={() => {}} />);
+      render(<Switch checked={true} />);
 
       const switchComponent = screen.getByRole("switch");
 
@@ -25,9 +25,7 @@ describe("Switch", () => {
     });
 
     it("should not have basic accessibility issues", async () => {
-      const { container } = render(
-        <Switch checked={true} setChecked={() => {}} />,
-      );
+      const { container } = render(<Switch checked={true} />);
       const results = await axe(container);
       expect(results).toHaveNoViolations();
     });
@@ -36,7 +34,7 @@ describe("Switch", () => {
   describe("when click", () => {
     it("calls the setChecked function", async () => {
       const setCheckedMock = vi.fn();
-      render(<Switch checked={true} setChecked={setCheckedMock} />);
+      render(<Switch checked={true} onChange={setCheckedMock} />);
 
       const switchComponent = screen.getByRole("switch");
       userEvent.click(switchComponent);

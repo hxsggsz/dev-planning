@@ -1,4 +1,3 @@
-export interface SwitchProps {
+export interface SwitchProps extends React.ComponentPropsWithoutRef<"input"> {
   checked: boolean;
-  setChecked: React.Dispatch<React.SetStateAction<boolean>>;
 }
