@@ -4,7 +4,7 @@ import { create } from "zustand";
 
 interface useUserTypes {
   user: User | null;
-  updateUser: (onError: (data: string) => void) => void;
+  updateUser: (roomId: string, onError: (data: string) => void) => void;
 }
 
 const getId = () => {
@@ -15,7 +15,7 @@ const getId = () => {
 
 export const useUser = create<useUserTypes>()((set) => ({
   user: null,
-  updateUser: async (onError) => {
+  updateUser: async (roomId, onError) => {
     const myId = getId();
 
     if (!myId) {
@@ -23,17 +23,20 @@ export const useUser = create<useUserTypes>()((set) => ({
       return;
     }
 
-    const { data: dataUser, error: errorUser } =
-      await UserService.findUser(myId);
+    const { data: dataUser, error: errorUser } = await UserService.findUser(
+      roomId,
+      myId,
+    );
 
-    if (errorUser) {
+    console.log(dataUser);
+    if (errorUser || !dataUser) {
       set((state) => ({
         ...state,
         status: "error",
-        error: errorUser.message,
+        error: errorUser.message || "user not found",
       }));
 
-      onError(errorUser.message);
+      onError(errorUser.message || "user not found");
       return;
     }
 

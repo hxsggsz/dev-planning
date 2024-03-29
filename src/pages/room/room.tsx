@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Room() {
+  const { roomId } = useParams();
+
   const { toast } = useToast();
 
   const navigate = useNavigate();
@@ -11,7 +13,7 @@ function Room() {
   const updateUser = useUser((state) => state.updateUser);
 
   useEffect(() => {
-    updateUser((errorMessage) => {
+    updateUser(roomId, (errorMessage) => {
       toast.error(errorMessage);
       navigate("join");
     });
@@ -26,3 +28,6 @@ function Room() {
 }
 
 export default Room;
+function useParams(): { roomId: any } {
+  throw new Error("Function not implemented.");
+}
