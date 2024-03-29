@@ -25,6 +25,13 @@ export class RoomService {
       .select()
       .single();
 
+    if (response.data) {
+      await supabase
+        .from("room")
+        .update({ admin_user: response.data.id })
+        .eq("id", inputs.roomId);
+    }
+
     return response;
   }
 
