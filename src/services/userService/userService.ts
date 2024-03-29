@@ -10,4 +10,13 @@ export class UserService {
       .single();
     return response;
   }
+
+  static async findUsers(roomId: string) {
+    const response = await supabase
+      .from("room_user")
+      .select("*")
+      .eq("room_id", roomId);
+
+    return response;
+  }
 }
