@@ -1,56 +1,106 @@
+[?25l
+    Select a project:                                                                          
+                                                                                               
+  >  1. dkmuumbgrlxcdmajkije [name: dev-planning, org: cbpwjadrdvfwzxyixecs, region: sa-east-1]
+                                                                                               
+                                                                                               
+    ↑/k up • ↓/j down • / filter • q quit • ? more                                             
+                                                                                               [0D[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[0D[2K [0D[2K[?25h[?1002l[?1003l[?1006lexport type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
+
 export type Database = {
   public: {
     Tables: {
       room: {
         Row: {
-          averageRoom: number;
-          created_at: string;
-          fibboRoom: number;
-          id: string;
-          isPublic: boolean;
-          isReveal: boolean;
-          name: string;
-          users_id: string[] | null;
-        };
+          admin_user: string
+          averageRoom: number
+          created_at: string
+          fibboRoom: number
+          id: string
+          isPublic: boolean
+          isReveal: boolean
+          name: string
+        }
         Insert: {
-          averageRoom?: number;
-          created_at?: string;
-          fibboRoom?: number;
-          id?: string;
-          isPublic?: boolean;
-          isReveal?: boolean;
-          name?: string;
-          users_id?: string[] | null;
-        };
+          admin_user?: string
+          averageRoom?: number
+          created_at?: string
+          fibboRoom?: number
+          id?: string
+          isPublic?: boolean
+          isReveal?: boolean
+          name?: string
+        }
         Update: {
-          averageRoom?: number;
-          created_at?: string;
-          fibboRoom?: number;
-          id?: string;
-          isPublic?: boolean;
-          isReveal?: boolean;
-          name?: string;
-          users_id?: string[] | null;
-        };
-        Relationships: [];
-      };
-    };
+          admin_user?: string
+          averageRoom?: number
+          created_at?: string
+          fibboRoom?: number
+          id?: string
+          isPublic?: boolean
+          isReveal?: boolean
+          name?: string
+        }
+        Relationships: []
+      }
+      room_user: {
+        Row: {
+          created_at: string
+          id: string
+          my_fibbo_value: number | null
+          profile_picture: string
+          room_id: string | null
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          my_fibbo_value?: number | null
+          profile_picture?: string
+          room_id?: string | null
+          username?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          my_fibbo_value?: number | null
+          profile_picture?: string
+          room_id?: string | null
+          username?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_room_user_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "room"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+    }
     Views: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     Functions: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     Enums: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
-};
+      [_ in never]: never
+    }
+  }
+}
 
-type PublicSchema = Database[Extract<keyof Database, "public">];
+type PublicSchema = Database[Extract<keyof Database, "public">]
 
 export type Tables<
   PublicTableNameOrOptions extends
@@ -63,7 +113,7 @@ export type Tables<
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R;
+      Row: infer R
     }
     ? R
     : never
@@ -71,11 +121,11 @@ export type Tables<
         PublicSchema["Views"])
     ? (PublicSchema["Tables"] &
         PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-        Row: infer R;
+        Row: infer R
       }
       ? R
       : never
-    : never;
+    : never
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
@@ -86,17 +136,17 @@ export type TablesInsert<
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I;
+      Insert: infer I
     }
     ? I
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Insert: infer I;
+        Insert: infer I
       }
       ? I
       : never
-    : never;
+    : never
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
@@ -107,17 +157,17 @@ export type TablesUpdate<
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U;
+      Update: infer U
     }
     ? U
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Update: infer U;
+        Update: infer U
       }
       ? U
       : never
-    : never;
+    : never
 
 export type Enums<
   PublicEnumNameOrOptions extends
@@ -130,4 +180,4 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
-    : never;
+    : never

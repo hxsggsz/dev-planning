@@ -11,6 +11,15 @@
     font-size: clamp(5vw, 3.2rem, 4.2rem);
     white-space: nowrap;
   }
+
+  .switchLabel {
+    font-weight: 700;
+    width: 100%;
+    gap: 0.4rem;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+  }
 }
 
 @media (max-width: 612px) {

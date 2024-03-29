@@ -6,15 +6,12 @@ import { CreateRoomTypes } from "@/types/createRoom";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/context/toastContext/useToast";
 import { useCreateRoom } from "@/stores/useCreateRoom/useCreateRoom";
-import { useUser } from "@/stores/useUserStore/useUserStore";
 import Switch from "@/components/switch/switch";
 
 function CreateRoom() {
   const { toast } = useToast();
 
   const navigate = useNavigate();
-
-  const userId = useUser((state) => state.user)?.id;
 
   const createRoom = useCreateRoom((state) => state.createRoom);
   const createRoomMutation = createRoom(
@@ -29,6 +26,7 @@ function CreateRoom() {
 
   const form = useForm<CreateRoomTypes>({
     defaultValues: {
+      username: "",
       room: "",
       isPublic: true,
     },
@@ -37,13 +35,22 @@ function CreateRoom() {
         errors.room = "Room's name must be between 3 and 30 characters long";
       }
     },
-    handleSubmit: (inputs) =>
-      createRoomMutation({ ...inputs, userId: userId ?? "" }),
+    handleSubmit: (inputs) => createRoomMutation(inputs),
   });
 
   return (
     <form data-testid="form" className={scss.form} onSubmit={form.onSubmit}>
       <h1 className={scss.title}>Dev Planning</h1>
+      <Input.Root hasError={!!form.errors?.room}>
+        <Input.Input
+          name="username"
+          onChange={form.handleChange}
+          disabled={form.isSubmitting}
+          placeholder="Your best username..."
+        />
+      </Input.Root>
+      <Input.Error errorMessage={form.errors?.room} />
+
       <Input.Root hasError={!!form.errors?.room}>
         <Input.Input
           name="room"
@@ -55,7 +62,7 @@ function CreateRoom() {
       <Input.Error errorMessage={form.errors?.room} />
 
       <label className={scss.switchLabel}>
-        <p>Is Room public?</p>
+        <p>Room will be public?</p>
         <Switch
           name="isPublic"
           onChange={form.handleChange}

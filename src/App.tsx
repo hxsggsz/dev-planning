@@ -21,11 +21,11 @@ function App() {
       element: <SignIn />,
     },
     {
-      path: "/room/:id",
+      path: "/room/:roomId",
       element: <Room />,
     },
     {
-      path: "/room/:id/join",
+      path: "/room/:roomId/join",
       element: <Join />,
     },
   ]);

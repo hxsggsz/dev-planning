@@ -1,24 +1,40 @@
 import Button from "@/components/button/button";
 import Input from "@/components/input/input";
-import { useForm } from "hxform";
-import { useNavigate } from "react-router-dom";
 import scss from "./joinRoom.module.scss";
-import { JoinRoomProps, JoinRoomTypes } from "./joinRoom.types";
+import { useForm } from "hxform";
+import { CreateRoomTypes } from "@/types/createRoom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useToast } from "@/context/toastContext/useToast";
+import { useJoinRoom } from "@/stores/useJoinRoom/useJoinRoom";
 
-function JoinRoom(props: JoinRoomProps) {
+function JoinRoom() {
+  const { roomId } = useParams();
+
+  const { toast } = useToast();
+
   const navigate = useNavigate();
 
-  const form = useForm<JoinRoomTypes>({
+  const joinRoom = useJoinRoom((state) => state.joinRoom);
+  const joinRoomMutation = joinRoom(
+    (roomId) => {
+      navigate(`/room/${roomId}`);
+      toast.success("Success, you're joining the room");
+    },
+    (errorMessage) => toast.error(errorMessage),
+  );
+
+  const form = useForm<Pick<CreateRoomTypes, "username">>({
     defaultValues: {
       username: "",
     },
     validation: (inputs, errors) => {
       if (inputs.username.length < 3 || inputs.username.length > 30) {
-        errors.username = "Username must be between 3 and 30 characters long";
+        errors.username =
+          "username's name must be between 3 and 30 characters long";
       }
     },
     handleSubmit: (inputs) =>
-      props.handleSubmit(inputs, (roomId) => navigate(`/room/${roomId}`)),
+      joinRoomMutation({ username: inputs.username, roomId: roomId ?? "" }),
   });
 
   return (
@@ -29,7 +45,7 @@ function JoinRoom(props: JoinRoomProps) {
           name="username"
           onChange={form.handleChange}
           disabled={form.isSubmitting}
-          placeholder="Your best username!"
+          placeholder="Your best username..."
         />
       </Input.Root>
       <Input.Error errorMessage={form.errors?.username} />
@@ -40,7 +56,7 @@ function JoinRoom(props: JoinRoomProps) {
         disabled={form.isSubmitting}
         isLoading={form.isSubmitting}
       >
-        Create Room
+        Join the Room
       </Button>
     </form>
   );

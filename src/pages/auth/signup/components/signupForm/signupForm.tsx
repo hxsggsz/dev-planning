@@ -63,10 +63,8 @@ function SignUpForm(props: SignUpProps) {
 
   return (
     <>
-      <h1 className={scss.title}>Create an accout</h1>
-      <p className={scss.subtitle}>
-        Enter your information to create an account
-      </p>
+      <h1 className={scss.title}>Create an account</h1>
+      <p className={scss.subtitle}>You need an account to keep going</p>
 
       <motion.form
         layout
