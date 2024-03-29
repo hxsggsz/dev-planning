@@ -15,8 +15,11 @@ interface useUserTypes {
   signOut: MutationTypes<User>;
   updateProfilePic: MutationTypes<User, FileList>;
 }
+
+const user = await UserService.getUser();
+
 export const useUser = create<useUserTypes>()((set, get) => ({
-  user: null,
+  user: user.data.user,
   error: null,
   status: "idle" as const,
   updateUser: (onSuccess, onError) => {
