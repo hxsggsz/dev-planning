@@ -1,0 +1,17 @@
+@use "@styles/global.scss" as *;
+
+.image {
+  min-width: 4rem;
+  min-height: 4rem;
+
+  display: grid;
+
+  place-items: center;
+
+  color: $background;
+  font-size: 1.6rem;
+  font-weight: 700;
+
+  background: $white;
+  border-radius: $rounded-full;
+}
