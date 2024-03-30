@@ -1,20 +1,25 @@
 @use "@styles/global.scss" as *;
 
 .wrapper {
-  max-width: 42rem;
   min-width: 42rem;
-  border: 1px solid $main;
-  background: $main;
-  padding: 1rem;
+  max-width: 42rem;
+
   display: flex;
+  gap: 0.4rem;
+
   align-items: center;
   justify-content: space-between;
-  gap: 0.4rem;
-  border-radius: $rounded-sm;
+
+  padding: 1rem;
+  border: 1px solid $main;
+
   position: fixed;
+  top: 2rem;
   right: 2rem;
-  bottom: 2rem;
   z-index: 9999;
+
+  background: $main;
+  border-radius: $rounded-sm;
 
   p {
     font-size: 1.8rem;
@@ -22,19 +27,24 @@
 
   .errorWrapper {
     display: flex;
+
     align-items: center;
 
     .icon {
       font-size: 3rem;
+
       margin-right: 0.6rem;
       padding: 0.2rem;
+
       border-radius: $rounded-sm;
     }
   }
 }
+
 .info {
-  background: $main;
   border: 1px solid $background;
+
+  background: $main;
 
   .icon {
     background: $background;
@@ -42,8 +52,9 @@
 }
 
 .success {
-  background: $green-bg;
   border: 1px solid $green;
+
+  background: $green-bg;
 
   .icon {
     background: $green;
@@ -51,8 +62,9 @@
 }
 
 .warning {
-  background: $yellow-bg;
   border: 1px solid $yellow;
+
+  background: $yellow-bg;
 
   .icon {
     background: $yellow;
@@ -60,8 +72,9 @@
 }
 
 .error {
-  background: $red-bg;
   border: 1px solid $red;
+
+  background: $red-bg;
 
   .icon {
     background: $red;

@@ -1,15 +1,17 @@
 @use "@styles/global.scss" as *;
 
 .wrapper {
-  display: grid;
-  place-items: center;
-
   width: 100vw;
   height: 100svh;
 
+  display: grid;
+
+  place-items: center;
+
   .content {
-    background: $main;
     padding: 1rem;
+
+    background: $main;
     border-radius: $rounded-lg;
   }
 }

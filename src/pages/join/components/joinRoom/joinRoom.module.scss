@@ -1,10 +1,12 @@
-@use "../../../../styles/global.scss" as *;
+@use "@styles/global.scss" as *;
 
 .form {
-  display: grid;
   width: 40%;
-  place-items: center;
+
+  display: grid;
   gap: 1rem;
+
+  place-items: center;
 
   .title {
     color: $main;
@@ -13,12 +15,15 @@
   }
 
   .switchLabel {
-    font-weight: 700;
     width: 100%;
-    gap: 0.4rem;
+
     display: flex;
-    justify-content: start;
+    gap: 0.4rem;
+
     align-items: center;
+    justify-content: start;
+
+    font-weight: 700;
   }
 }
 

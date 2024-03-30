@@ -34,21 +34,24 @@ html:focus-within {
 
 body,
 html {
-  font-family: $mainFont;
+  font-family: $main-font;
   font-size: 62.5%;
 }
 
 /* Set core body defaults */
 body {
-  padding: 0;
-  margin: 0;
-  color: $white;
-  background: $background;
-  min-height: 0;
   min-width: 0;
+  min-height: 0;
   overflow-x: hidden;
-  text-rendering: optimizeSpeed;
+
+  color: $white;
   line-height: 1.5;
+  text-rendering: optimizeSpeed;
+
+  margin: 0;
+  padding: 0;
+
+  background: $background;
 }
 
 h1,
@@ -56,8 +59,8 @@ p,
 span,
 a,
 label {
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 h1 {
@@ -80,6 +83,7 @@ a:not([class]) {
 img,
 picture {
   max-width: 100%;
+
   display: block;
 }
 
@@ -97,20 +101,24 @@ button {
 }
 
 ul {
-  list-style: none;
-  text-decoration: none;
   all: unset;
+
+  text-decoration: none;
+
+  list-style: none;
 
   li {
     all: unset;
+
     font-size: 1.6rem;
   }
 }
 
 button {
-  border: none;
-  background: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  border: 0;
+
+  background: none;
   border-radius: 0;
 }

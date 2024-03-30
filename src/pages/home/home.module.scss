@@ -1,7 +1,9 @@
 .container {
   height: calc(100dvh - 20px);
+  overflow-y: hidden;
+
   display: flex;
+
   align-items: center;
   justify-content: center;
-  overflow-y: hidden;
 }

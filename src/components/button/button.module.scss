@@ -1,17 +1,22 @@
-@use "../../styles/global.scss" as *;
+@use "@styles/global.scss" as *;
 
 .default {
-  cursor: pointer;
-  color: $white;
   display: flex;
-  align-items: center;
   gap: 0.8rem;
+
+  align-items: center;
   justify-content: center;
-  white-space: nowrap;
+
+  color: $white;
   font-size: 1.8rem;
   font-weight: 600;
+  white-space: nowrap;
+
   border-radius: $rounded-sm;
+
   transition: all 350ms ease;
+
+  cursor: pointer;
 }
 
 .small {
@@ -35,49 +40,57 @@
 }
 
 .primary {
-  background: $main;
   color: $white;
+
+  background: $main;
 
   &:hover {
     background: rgba($main, 0.6);
   }
 
   &:disabled {
-    cursor: not-allowed;
     background: rgba($main, 0.4);
+
+    cursor: not-allowed;
   }
 }
 
 .outline {
-  background: inherit;
-  border: 1px solid $main;
   color: $main;
+
+  border: 1px solid $main;
+
+  background: inherit;
 
   &:hover {
     border: 1px solid rgba(#3e5c76, 0.6);
   }
 
   &:disabled {
-    cursor: not-allowed;
     border: 1px solid rgba(#3e5c76, 0.4);
+
+    cursor: not-allowed;
   }
 }
 
 .ghost {
-  background: inherit;
   border: 0;
+
+  background: inherit;
 
   &:hover {
     background: rgba(#fce7f3, 0.2);
   }
 
   &:disabled {
-    cursor: not-allowed;
     background: rgba(#3e5c76, 0.4);
+
+    cursor: not-allowed;
   }
 }
 
 .rounded {
-  border-radius: 50%;
   padding: 1rem;
+
+  border-radius: 50%;
 }

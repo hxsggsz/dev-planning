@@ -1,29 +1,40 @@
-@use "../../styles/global.scss" as *;
+@use "@styles/global.scss" as *;
 
 .root {
-  border: 2px solid $main;
-  border-radius: $rounded-sm;
-  padding: 0.6rem;
-  display: flex;
-  align-items: center;
   width: 100%;
-  cursor: text;
-  transition: background 300ms;
+
+  display: flex;
+
+  align-items: center;
+
   color: $main;
+
+  padding: 0.6rem;
+  border: 2px solid $main;
+
+  border-radius: $rounded-sm;
+
+  transition: background 300ms;
+
+  cursor: text;
 
   &:focus-within {
     color: $white;
+
     background: rgba($main, 0.4);
   }
 }
 
 .input {
-  outline: none;
-  border: none;
-  background: none;
   width: 100%;
-  font-weight: 600;
+
   color: $white;
+  font-weight: 600;
+
+  border: 0;
+
+  background: none;
+  outline: none;
 
   &::placeholder {
     color: $grey;
@@ -38,12 +49,15 @@
 
 .error {
   border-color: $red;
+
   background: rgba($red, 0.6);
 }
 
 .errorMessage {
-  color: $red;
   width: 100%;
+
+  color: $red;
   text-align: left;
+
   margin-bottom: 4px;
 }

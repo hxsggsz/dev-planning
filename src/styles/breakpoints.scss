@@ -1,50 +1,50 @@
-$phoneScreen: 37.5rem; // 600px
-$tabletScreen: 56.5rem; // 905px
-$desktopScreen: 77.5rem; // 1240px
-$largeDesktopScreen: 90rem; // 1440px
+$phone-screen: 37.5rem; // 600px
+$tablet-screen: 56.5rem; // 905px
+$desktop-screen: 77.5rem; // 1240px
+$large-desktop-screen: 90rem; // 1440px
 
-$breakpointPhone: 20rem; // 320px
-$breakpointTablet: 30rem; // 480px
-$breakpointDesktop: 120rem; // 1920px
+$breakpoint-phone: 20rem; // 320px
+$breakpoint-tablet: 30rem; // 480px
+$breakpoint-tesktop: 120rem; // 1920px
 
 @mixin from320 {
-  @media screen and (min-width: $breakpointPhone) {
+  @media screen and (min-width: $breakpoint-phone) {
     @content;
   }
 }
 
 @mixin from480 {
-  @media screen and (min-width: $breakpointTablet) {
+  @media screen and (min-width: $breakpoint-tablet) {
     @content;
   }
 }
 
 @mixin from600 {
-  @media screen and (min-width: $phoneScreen) {
+  @media screen and (min-width: $phone-screen) {
     @content;
   }
 }
 
 @mixin from905 {
-  @media screen and (min-width: $tabletScreen) {
+  @media screen and (min-width: $tablet-screen) {
     @content;
   }
 }
 
 @mixin from1240 {
-  @media screen and (min-width: $desktopScreen) {
+  @media screen and (min-width: $desktop-screen) {
     @content;
   }
 }
 
 @mixin from1440 {
-  @media screen and (min-width: $largeDesktopScreen) {
+  @media screen and (min-width: $large-desktop-screen) {
     @content;
   }
 }
 
 @mixin from1920 {
-  @media screen and (min-width: $breakpointDesktop) {
+  @media screen and (min-width: $breakpoint-desktop) {
     @content;
   }
 }

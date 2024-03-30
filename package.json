@@ -11,6 +11,10 @@
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
+    "prettier": "prettier . --check --ignore-unknown",
+    "prettier:fix": "prettier . --write --ignore-unknown",
+    "stylelint": "stylelint \"**/*.scss\"",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -45,6 +49,11 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "jsdom": "^23.2.0",
     "sass": "^1.69.7",
+    "stylelint": "^16.3.1",
+    "stylelint-config-sass-guidelines": "^11.1.0",
+    "stylelint-order": "^6.0.4",
+    "stylelint-prettier": "^5.0.0",
+    "stylelint-scss": "^6.2.1",
     "supabase": "^1.150.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
