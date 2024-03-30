@@ -1,0 +1,46 @@
+@use "@styles/global.scss" as *;
+
+.header {
+  width: calc(100vw - 28rem);
+  height: 6rem;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: end;
+
+  padding: 0.4rem;
+
+  position: relative;
+
+  background: $main;
+
+  &::before {
+    width: 2.2rem;
+    height: 2.2rem;
+
+    position: absolute;
+
+    bottom: -6px;
+    left: -18px;
+
+    background: $main;
+    border-bottom-right-radius: $rounded-md;
+
+    content: "";
+  }
+
+  .userInfo {
+    display: flex;
+
+    gap: 0.6rem;
+
+    align-items: center;
+
+    .userName {
+      font-size: 1.6rem;
+
+      margin: 0;
+    }
+  }
+}
