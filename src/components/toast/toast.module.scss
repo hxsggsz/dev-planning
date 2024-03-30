@@ -42,6 +42,8 @@
 }
 
 .info {
+  color: $background;
+
   border: 1px solid $background;
 
   background: $main;
@@ -52,6 +54,8 @@
 }
 
 .success {
+  color: $green;
+
   border: 1px solid $green;
 
   background: $green-bg;
@@ -62,6 +66,8 @@
 }
 
 .warning {
+  color: $yellow;
+
   border: 1px solid $yellow;
 
   background: $yellow-bg;
@@ -72,6 +78,8 @@
 }
 
 .error {
+  color: $red;
+
   border: 1px solid $red;
 
   background: $red-bg;
