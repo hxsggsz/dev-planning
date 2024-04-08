@@ -21,9 +21,10 @@ function Button({ size = "medium", ...props }: ButtonProps) {
   );
 
   const Comp = props.asChild ? Slot : "button";
+
   return (
     <Comp className={btnClasses} {...props}>
-      {props.isLoading ? <Loading /> : renderContent()}
+      {props.isLoading && <Loading />} {renderContent()}
     </Comp>
   );
 }
