@@ -4,13 +4,13 @@ import scss from "./joinRoom.module.scss";
 import { useForm } from "hxform";
 import { CreateRoomTypes } from "@/types/createRoom";
 import { useNavigate, useParams } from "react-router-dom";
-import { useToast } from "@/context/toastContext/useToast";
 import { useJoinRoom } from "@/stores/useJoinRoom/useJoinRoom";
+import { useToast } from "@/stores/useToast/useToast";
 
 function JoinRoom() {
   const { roomId } = useParams();
 
-  const { toast } = useToast();
+  const toast = useToast();
 
   const navigate = useNavigate();
 

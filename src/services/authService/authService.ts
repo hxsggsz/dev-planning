@@ -3,9 +3,8 @@ import { AuthType } from "./authService.types";
 import { api } from "@/lib/api";
 
 export class AuthService {
-  static async signUp(signUpData: AuthType) {
-    const { data } = await api.post("/api/auth/signup", signUpData);
-    return data;
+  static async signUp(signUpData: AuthType): Promise<void> {
+    await api.post("/api/auth/signup", signUpData);
   }
 
   static async signIn(data: AuthType) {

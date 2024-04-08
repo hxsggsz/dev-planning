@@ -20,9 +20,7 @@ export const useUser = create<useUserTypes>()((set) => ({
   user: null,
   signUp: async (signUpData) => {
     try {
-      const { access_token } = await AuthService.signUp(signUpData);
-
-      console.log(access_token);
+      await AuthService.signUp(signUpData);
     } catch (error) {
       console.log(error);
     }

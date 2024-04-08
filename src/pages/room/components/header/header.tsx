@@ -1,4 +1,4 @@
-import { useUser } from "@/stores/useUserStore/useUserStore";
+import { useUser } from "@/stores/useUser/useUser";
 import scss from "./header.module.scss";
 import ProfileLetter from "../navbar/components/profileLetter/profileLetter";
 

@@ -1,4 +1,4 @@
-import { useUser } from "@/stores/useUserStore/useUserStore";
+import { useUser } from "@/stores/useUser/useUser";
 import SignUpForm from "./components/signUpForm/signUpForm";
 import scss from "./signUp.module.scss";
 

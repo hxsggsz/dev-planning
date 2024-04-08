@@ -1,7 +1,7 @@
 @use "@styles/global.scss" as *;
 
 .wrapper {
-  min-width: 42rem;
+  width: calc(100% - 2rem);
   max-width: 42rem;
 
   display: flex;
@@ -10,12 +10,14 @@
   align-items: center;
   justify-content: space-between;
 
+  margin: 1rem;
+
   padding: 1rem;
   border: 1px solid $main;
 
   position: fixed;
-  top: 2rem;
-  right: 2rem;
+  top: 0;
+  right: 0;
   z-index: 9999;
 
   background: $main;
@@ -31,6 +33,7 @@
     align-items: center;
 
     .icon {
+      color: $white;
       font-size: 3rem;
 
       margin-right: 0.6rem;

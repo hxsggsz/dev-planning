@@ -1,15 +1,15 @@
-import { useToast } from "@/context/toastContext/useToast";
-import { useUser } from "@/stores/useUserStore/useUserStore";
+import { useUser } from "@/stores/useUser/useUser";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "./components/navbar/navbar";
 import scss from "./room.module.scss";
 import Header from "./components/header/header";
+import { useToast } from "@/stores/useToast/useToast";
 
 function Room() {
   const { roomId } = useParams();
 
-  const { toast } = useToast();
+  const toast = useToast();
 
   const navigate = useNavigate();
 

@@ -1,9 +1,10 @@
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-import { ToastProvider } from "./context/toastContext/toastContext.tsx";
+import Toast from "./components/toast/toast.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <ToastProvider exitTimer={3500}>
+  <>
+    <Toast />
     <App />
-  </ToastProvider>,
+  </>,
 );

@@ -4,12 +4,12 @@ import scss from "./createRoom.module.scss";
 import { useForm } from "hxform";
 import { CreateRoomTypes } from "@/types/createRoom";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/context/toastContext/useToast";
 import { useCreateRoom } from "@/stores/useCreateRoom/useCreateRoom";
 import Switch from "@/components/switch/switch";
+import { useToast } from "@/stores/useToast/useToast";
 
 function CreateRoom() {
-  const { toast } = useToast();
+  const toast = useToast();
 
   const navigate = useNavigate();
 

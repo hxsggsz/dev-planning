@@ -2,7 +2,7 @@ import { renderHook, act } from "@testing-library/react";
 import * as zustand from "zustand";
 import { myCustomCreate, storeResetFns } from "../__mocks__/zustand";
 import { Database } from "@/services/client.types";
-import { useUser } from "./useUserStore";
+import { useUser } from "./useUser";
 
 vi.mock("@/services/client", () => {
   let callCount = 0;
