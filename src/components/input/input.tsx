@@ -39,6 +39,7 @@ function RealInput(props: InputProps) {
     <>
       <input
         {...props}
+        autoComplete="off"
         className={scss.input}
         type={isSecret && props.isSecret ? "password" : "text"}
       />
