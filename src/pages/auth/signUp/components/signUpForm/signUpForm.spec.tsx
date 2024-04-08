@@ -1,21 +1,23 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 
 import SignupForm from "./signUpForm";
 import { axe } from "vitest-axe";
 import userEvent from "@testing-library/user-event";
+import { SignUpFormProps } from "./signUpForm.type";
 
-const makeSut = () => render(<SignupForm />);
+const makeSut = ({ signUp = vi.fn(), ...props }: Partial<SignUpFormProps>) =>
+  render(<SignupForm signUp={signUp} {...props} />);
 
 describe("SignupForm", () => {
   describe("when initialize", () => {
     it("renders correctly", () => {
-      makeSut();
+      makeSut({});
 
       expect(screen.getByPlaceholderText(/username/i)).toBeInTheDocument();
     });
 
     it("have no a11y violations", async () => {
-      const { container } = makeSut();
+      const { container } = makeSut({});
       const results = await axe(container);
       expect(results).toHaveNoViolations();
     });
@@ -23,7 +25,7 @@ describe("SignupForm", () => {
 
   describe("when focus in password input", () => {
     it("shows in screen the password guide", async () => {
-      makeSut();
+      makeSut({});
       const inputEl = screen.getByPlaceholderText(/secret password/i);
 
       userEvent.click(inputEl);
@@ -36,7 +38,7 @@ describe("SignupForm", () => {
 
   describe("when type in username a value less than 6 or bigger than 30", () => {
     it("shows in the screen the validation message", async () => {
-      makeSut();
+      makeSut({});
 
       const inputEl = screen.getByPlaceholderText(/username/i);
       const btnEl = screen.getByRole("button", { name: /sign up/i });
@@ -59,7 +61,7 @@ describe("SignupForm", () => {
 
   describe("when type in email a invalid value", () => {
     it("shows in the screen the validation message", async () => {
-      makeSut();
+      makeSut({});
 
       const inputEl = screen.getByPlaceholderText(/email/i);
       const btnEl = screen.getByRole("button", { name: /sign up/i });
@@ -75,7 +77,7 @@ describe("SignupForm", () => {
 
   describe("when type in password a weak password", () => {
     it("shows in the screen the validation message", async () => {
-      makeSut();
+      makeSut({});
 
       const inputEl = screen.getByPlaceholderText(/secret password/i);
       const btnEl = screen.getByRole("button", { name: /sign up/i });
@@ -93,7 +95,7 @@ describe("SignupForm", () => {
 
   describe("when type in password a value and a different value in confirm password", () => {
     it("shows in the screen the validation message", async () => {
-      makeSut();
+      makeSut({});
 
       const inputEl = screen.getByPlaceholderText(/secret password/i);
       const inputConfirmEl = screen.getByPlaceholderText(
@@ -110,6 +112,27 @@ describe("SignupForm", () => {
       );
 
       validationEl.map((element) => expect(element).toBeInTheDocument());
+    });
+  });
+
+  describe("when pass all validations", () => {
+    it("calls the signUp function", async () => {
+      const mockSignUp = vi.fn();
+      makeSut({ signUp: mockSignUp });
+
+      const usernameEl = screen.getByPlaceholderText(/username/i);
+      const emailEl = screen.getByPlaceholderText(/email/i);
+      const passEl = screen.getByPlaceholderText(/secret password/i);
+      const confirmEl = screen.getByPlaceholderText(/confirm your password/i);
+      const btnEl = screen.getByRole("button", { name: /sign up/i });
+
+      await userEvent.type(usernameEl, "hxsggsz");
+      await userEvent.type(emailEl, "validEmail@gmail.com");
+      await userEvent.type(passEl, "senhaA!1");
+      await userEvent.type(confirmEl, "senhaA!1");
+      await userEvent.click(btnEl);
+
+      await waitFor(() => expect(mockSignUp).toHaveBeenCalledTimes(1));
     });
   });
 });

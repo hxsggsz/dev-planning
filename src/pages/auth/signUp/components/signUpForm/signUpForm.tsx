@@ -48,8 +48,8 @@ function SignUpForm(props: SignUpFormProps) {
   return (
     <motion.form
       layout
-      onSubmit={form.onSubmit}
       noValidate
+      onSubmit={form.onSubmit}
       className={scss.wrapper}
     >
       <Input.Root hasError={!!form.errors?.username}>
@@ -101,7 +101,7 @@ function SignUpForm(props: SignUpFormProps) {
           name="confirmPassword"
           onChange={form.handleChange}
           disabled={form.isSubmitting}
-          placeholder="Confirm you password"
+          placeholder="Confirm your password"
         />
       </Input.Root>
       <Input.Error errorMessage={form.errors?.confirmPassword} />
@@ -112,7 +112,7 @@ function SignUpForm(props: SignUpFormProps) {
         disabled={form.isSubmitting}
         isLoading={form.isSubmitting}
       >
-        Submit
+        Sign Up
       </Button>
     </motion.form>
   );
