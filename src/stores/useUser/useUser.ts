@@ -1,16 +1,9 @@
 import { AuthService } from "@/services/authService/authService";
-import { AuthType } from "@/services/authService/authService.types";
 import { UserService } from "@/services/userService/userService";
-import { User } from "@/types/user";
 import { create } from "zustand";
 import { useToast } from "@/stores/useToast/useToast";
 import { AxiosError } from "axios";
-
-interface useUserTypes {
-  user: User | null;
-  signUp: (signUpData: AuthType) => void;
-  updateUser: (roomId: string, onError: (data: string) => void) => void;
-}
+import { useUserTypes } from "./useUser.types";
 
 const getId = () => {
   if (typeof window !== "undefined") {

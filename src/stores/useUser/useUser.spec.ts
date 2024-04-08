@@ -1,55 +1,17 @@
-import { renderHook, act } from "@testing-library/react";
+import { renderHook, act, cleanup } from "@testing-library/react";
 import * as zustand from "zustand";
 import { myCustomCreate, storeResetFns } from "../__mocks__/zustand";
-import { Database } from "@/services/client.types";
 import { useUser } from "./useUser";
+import { api } from "@/lib/api";
+import MockAdapter from "axios-mock-adapter";
 
-vi.mock("@/services/client", () => {
-  let callCount = 0;
-  const mockSignIn = vi.fn();
-  mockSignIn.mockImplementation(() => {
-    callCount++;
-    if (callCount < 4) {
-      return { data: {} };
-    }
-    return { error: { message: "mock error" } };
-  });
+const mock = new MockAdapter(api);
 
-  let callcountsignout = 0;
-  const mocksignOut = vi.fn();
-  mocksignOut.mockImplementation(() => {
-    callcountsignout++;
-    if (callcountsignout < 4) {
-      return { error: null };
-    }
-    return { error: { message: "mock error" } };
-  });
-
-  let callcountsignUp = 0;
-  const mocksignUp = vi.fn();
-  mocksignUp.mockImplementation(() => {
-    callcountsignUp++;
-    if (callcountsignUp < 4) {
-      return { error: null };
-    }
-    return { error: { message: "mock error" } };
-  });
-
-  return {
-    supabase: {
-      auth: {
-        signInWithPassword: mockSignIn,
-        signOut: mocksignOut,
-        signUp: mocksignUp,
-        updateUser: vi.fn().mockReturnValue({
-          data: {
-            username: "hxsggsz",
-          },
-        }),
-      },
-    },
-  } as unknown as Database;
+beforeAll(() => {
+  mock.reset();
 });
+
+afterEach(cleanup);
 
 vi.mock("zustand", async () => {
   const zustand = (await vi.importActual("zustand")) as object;
@@ -72,390 +34,45 @@ describe("useUser", () => {
   });
 
   describe("when initialize", () => {
-    it("status should be `idle`", () => {
-      const { result } = renderHook(() => useUser((state) => state));
-
-      expect(result.current.status).toBe("idle");
-    });
-
     it("user should be `null`", () => {
       const { result } = renderHook(() => useUser((state) => state));
 
       expect(result.current.user).toBeNull();
     });
-
-    it("error should be `null`", () => {
-      const { result } = renderHook(() => useUser((state) => state));
-
-      expect(result.current.error).toBeNull();
-    });
   });
 
-  describe("when call the signin", () => {
+  describe("when call the signUp", () => {
     describe("and has no error", () => {
-      it("turn status in `success`", async () => {
+      it("user keep null", async () => {
+        mock.onPost("api/auth/signup").reply(200);
         const { result } = renderHook(() => useUser((state) => state));
 
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
         await act(async () => {
-          const storeFunc = result.current.signIn(successMock, errorMock);
-
-          return storeFunc({ email: "email", password: "password" });
+          result.current.signUp({
+            username: "test",
+            email: "email@gmail.com",
+            password: "myPassword",
+          });
         });
 
-        expect(successMock).toHaveBeenCalledOnce();
-        expect(result.current.status).toBe("success");
-      });
-
-      it("calls the onSuccess callback", async () => {
-        const { result } = renderHook(() => useUser((state) => state));
-
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
-        await act(async () => {
-          const storeFunc = result.current.signIn(successMock, errorMock);
-
-          return storeFunc({ email: "email", password: "password" });
-        });
-
-        expect(successMock).toHaveBeenCalledOnce();
-      });
-
-      it("error keep null", async () => {
-        const { result } = renderHook(() => useUser((state) => state));
-
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
-        await act(async () => {
-          const storeFunc = result.current.signIn(successMock, errorMock);
-
-          return storeFunc({ email: "email", password: "password" });
-        });
-
-        expect(result.current.error).toBeNull();
+        expect(result.current.user).toBeNull();
       });
     });
 
     describe("and has errors", () => {
-      it("turn status into `Error`", async () => {
+      it("user keep null", async () => {
+        mock.onPost("api/auth/signup").reply(500);
         const { result } = renderHook(() => useUser((state) => state));
 
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
         await act(async () => {
-          const storeFunc = result.current.signIn(successMock, errorMock);
-
-          return storeFunc({ email: "email", password: "password" });
-        });
-
-        expect(result.current.status).toBe("error");
-      });
-
-      it("calls thge onError callback", async () => {
-        const { result } = renderHook(() => useUser((state) => state));
-
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
-        await act(async () => {
-          const storeFunc = result.current.signIn(successMock, errorMock);
-
-          return storeFunc({ email: "email", password: "password" });
-        });
-
-        expect(errorMock).toHaveBeenCalledOnce();
-      });
-
-      it("updates the error value", async () => {
-        const { result } = renderHook(() => useUser((state) => state));
-
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
-        await act(async () => {
-          const storeFunc = result.current.signIn(successMock, errorMock);
-
-          return await storeFunc({ email: "email", password: "password" });
-        });
-
-        expect(result.current.error).toMatch("mock error");
-      });
-
-      it("user keeps null", async () => {
-        const { result } = renderHook(() => useUser((state) => state));
-
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
-        await act(async () => {
-          const storeFunc = result.current.signIn(successMock, errorMock);
-
-          return storeFunc({ email: "email", password: "password" });
-        });
-
-        expect(result.current.user).toBeUndefined();
-      });
-    });
-  });
-
-  describe("when call the signout", () => {
-    describe("and has no error", () => {
-      it("turn status in `success`", async () => {
-        const { result } = renderHook(() => useUser((state) => state));
-
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
-        await act(async () => {
-          const storeFunc = result.current.signOut(successMock, errorMock);
-
-          return await storeFunc();
-        });
-
-        expect(successMock).toHaveBeenCalledOnce();
-        expect(result.current.status).toBe("success");
-      });
-
-      it("calls the onSuccess callback", async () => {
-        const { result } = renderHook(() => useUser((state) => state));
-
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
-        await act(async () => {
-          const storeFunc = result.current.signOut(successMock, errorMock);
-
-          return storeFunc();
-        });
-
-        expect(successMock).toHaveBeenCalledOnce();
-      });
-
-      it("error keep null", async () => {
-        const { result } = renderHook(() => useUser((state) => state));
-
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
-        await act(async () => {
-          const storeFunc = result.current.signOut(successMock, errorMock);
-
-          return storeFunc();
-        });
-
-        expect(result.current.error).toBeNull();
-      });
-    });
-
-    describe("and has errors", () => {
-      it("turn status into `Error`", async () => {
-        const { result } = renderHook(() => useUser((state) => state));
-
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
-        await act(async () => {
-          const storeFunc = result.current.signOut(successMock, errorMock);
-
-          return storeFunc();
-        });
-        expect(result.current.status).toBe("error");
-      });
-
-      it("calls thge onError callback", async () => {
-        const { result } = renderHook(() => useUser((state) => state));
-
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
-        await act(async () => {
-          const storeFunc = result.current.signOut(successMock, errorMock);
-
-          return storeFunc();
-        });
-        expect(errorMock).toHaveBeenCalledOnce();
-      });
-
-      it("updates the error value", async () => {
-        const { result } = renderHook(() => useUser((state) => state));
-
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
-        await act(async () => {
-          const storeFunc = result.current.signIn(successMock, errorMock);
-
-          return await storeFunc({ email: "email", password: "password" });
-        });
-
-        expect(result.current.error).toMatch("mock error");
-      });
-
-      it("user keeps null", async () => {
-        const { result } = renderHook(() => useUser((state) => state));
-
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
-        await act(async () => {
-          const storeFunc = result.current.signOut(successMock, errorMock);
-
-          return storeFunc();
-        });
-
-        expect(result.current.user).toBeUndefined();
-      });
-    });
-  });
-
-  describe("when call the signup", () => {
-    describe("and has no error", () => {
-      it("turn status in `success`", async () => {
-        const { result } = renderHook(() => useUser((state) => state));
-
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
-        await act(async () => {
-          const storeFunc = result.current.signUp(successMock, errorMock);
-
-          return storeFunc({
-            username: "hxsggsz",
-            confirmPassword: "password",
-            email: "email",
-            password: "password",
+          result.current.signUp({
+            username: "test",
+            email: "email@gmail.com",
+            password: "myPassword",
           });
         });
 
-        expect(successMock).toHaveBeenCalledOnce();
-        expect(result.current.status).toBe("success");
-      });
-
-      it("calls the onSuccess callback", async () => {
-        const { result } = renderHook(() => useUser((state) => state));
-
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
-        await act(async () => {
-          const storeFunc = result.current.signUp(successMock, errorMock);
-
-          return storeFunc({
-            username: "hxsggsz",
-            confirmPassword: "password",
-            email: "email",
-            password: "password",
-          });
-        });
-
-        expect(successMock).toHaveBeenCalledOnce();
-      });
-
-      it("error keep null", async () => {
-        const { result } = renderHook(() => useUser((state) => state));
-
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
-        await act(async () => {
-          const storeFunc = result.current.signUp(successMock, errorMock);
-
-          return storeFunc({
-            username: "hxsggsz",
-            confirmPassword: "password",
-            email: "email",
-            password: "password",
-          });
-        });
-
-        expect(result.current.error).toBeNull();
-      });
-    });
-
-    describe("and has errors", () => {
-      it("turn status into `Error`", async () => {
-        const { result } = renderHook(() => useUser((state) => state));
-
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
-        await act(async () => {
-          const storeFunc = result.current.signUp(successMock, errorMock);
-
-          return storeFunc({
-            username: "hxsggsz",
-            confirmPassword: "password",
-            email: "email",
-            password: "password",
-          });
-        });
-
-        expect(result.current.status).toBe("error");
-      });
-
-      it("calls thge onError callback", async () => {
-        const { result } = renderHook(() => useUser((state) => state));
-
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
-        await act(async () => {
-          const storeFunc = result.current.signUp(successMock, errorMock);
-
-          return storeFunc({
-            username: "hxsggsz",
-            confirmPassword: "password",
-            email: "email",
-            password: "password",
-          });
-        });
-
-        expect(errorMock).toHaveBeenCalledOnce();
-      });
-
-      it("updates the error value", async () => {
-        const { result } = renderHook(() => useUser((state) => state));
-
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
-        await act(async () => {
-          const storeFunc = result.current.signUp(successMock, errorMock);
-
-          return await storeFunc({
-            username: "hxsggsz",
-            confirmPassword: "password",
-            email: "email",
-            password: "password",
-          });
-        });
-
-        expect(result.current.error).toMatch("mock error");
-      });
-
-      it("user keeps null", async () => {
-        const { result } = renderHook(() => useUser((state) => state));
-
-        const successMock = vi.fn();
-        const errorMock = vi.fn();
-
-        await act(async () => {
-          const storeFunc = result.current.signUp(successMock, errorMock);
-
-          return storeFunc({
-            username: "hxsggsz",
-            confirmPassword: "password",
-            email: "email",
-            password: "password",
-          });
-        });
-
-        expect(result.current.user).toBeUndefined();
+        expect(result.current.user).toBeNull();
       });
     });
   });
