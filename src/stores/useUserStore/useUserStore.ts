@@ -1,9 +1,12 @@
+import { AuthService } from "@/services/authService/authService";
+import { AuthType } from "@/services/authService/authService.types";
 import { UserService } from "@/services/userService/userService";
 import { User } from "@/types/user";
 import { create } from "zustand";
 
 interface useUserTypes {
   user: User | null;
+  signUp: (signUpData: AuthType) => void;
   updateUser: (roomId: string, onError: (data: string) => void) => void;
 }
 
@@ -15,6 +18,15 @@ const getId = () => {
 
 export const useUser = create<useUserTypes>()((set) => ({
   user: null,
+  signUp: async (signUpData) => {
+    try {
+      const { access_token } = await AuthService.signUp(signUpData);
+
+      console.log(access_token);
+    } catch (error) {
+      console.log(error);
+    }
+  },
   updateUser: async (roomId, onError) => {
     const myId = getId();
 

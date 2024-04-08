@@ -7,8 +7,9 @@ import { useForm } from "hxform";
 import { useState } from "react";
 import PasswordGuide from "../passwordGuide/passwordGuide";
 import scss from "./signUpForm.module.scss";
+import { SignUpFormProps } from "./signUpForm.type";
 
-function SignUpForm() {
+function SignUpForm(props: SignUpFormProps) {
   const [shouldShowGuide, setShouldShowGuide] = useState(false);
 
   const form = useForm<SignUpTypes>({
@@ -41,7 +42,7 @@ function SignUpForm() {
           "password must be equal to your password confirmation";
       }
     },
-    handleSubmit: (inputs) => console.log(inputs),
+    handleSubmit: (inputs) => props.signUp(inputs),
   });
 
   return (

@@ -1,7 +1,9 @@
+import { useUser } from "@/stores/useUserStore/useUserStore";
 import SignUpForm from "./components/signUpForm/signUpForm";
 import scss from "./signUp.module.scss";
 
 function SignUp() {
+  const signUp = useUser((state) => state.signUp);
   return (
     <main className={scss.wrapper}>
       <img src="/images/auth/auth.png" className={scss.img} />
@@ -9,7 +11,7 @@ function SignUp() {
         <h1 className={scss.title}>Create an accout</h1>
         <p className={scss.subtitle}>You need an account to keep going here!</p>
 
-        <SignUpForm />
+        <SignUpForm signUp={signUp} />
       </section>
     </main>
   );
