@@ -3,6 +3,8 @@ import { AuthType } from "@/services/authService/authService.types";
 import { UserService } from "@/services/userService/userService";
 import { User } from "@/types/user";
 import { create } from "zustand";
+import { useToast } from "@/stores/useToast/useToast";
+import { AxiosError } from "axios";
 
 interface useUserTypes {
   user: User | null;
@@ -22,7 +24,10 @@ export const useUser = create<useUserTypes>()((set) => ({
     try {
       await AuthService.signUp(signUpData);
     } catch (error) {
-      console.log(error);
+      if (error instanceof AxiosError) {
+        console.error(error);
+        useToast.getState().error(error.response?.data.message);
+      }
     }
   },
   updateUser: async (roomId, onError) => {
