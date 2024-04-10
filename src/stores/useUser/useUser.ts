@@ -4,6 +4,9 @@ import { create } from "zustand";
 import { useToast } from "@/stores/useToast/useToast";
 import { AxiosError } from "axios";
 import { useUserTypes } from "./useUser.types";
+import { router } from "@/routes";
+import cookies from "js-cookie";
+import { decodeJWT } from "@/utils/decodeJWT";
 
 const getId = () => {
   if (typeof window !== "undefined") {
@@ -13,13 +16,40 @@ const getId = () => {
 
 export const useUser = create<useUserTypes>()((set) => ({
   user: null,
-  signUp: async (signUpData) => {
+  signIn: async (signInData) => {
+    const toast = useToast.getState();
+
     try {
-      await AuthService.signUp(signUpData);
+      const { data } = await AuthService.signIn(signInData);
+
+      cookies.set("_auth", data.access_token, { expires: 30 });
+      toast.success("Account created successfully, now sign in");
+
+      const decodedUser = decodeJWT(data.access_token);
+      console.log(decodedUser);
+      set((state) => ({
+        ...state,
+        user: decodedUser,
+      }));
+      router.navigate("/");
     } catch (error) {
       if (error instanceof AxiosError) {
         console.error(error);
-        useToast.getState().error(error.response?.data.message);
+        toast.error(error.response?.data.message);
+      }
+    }
+  },
+  signUp: async (signUpData) => {
+    const toast = useToast.getState();
+
+    try {
+      await AuthService.signUp(signUpData);
+      toast.success("Account created successfully, now sign in");
+      router.navigate("/auth/signin");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.error(error);
+        toast.error(error.response?.data.message);
       }
     }
   },
