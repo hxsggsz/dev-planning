@@ -58,21 +58,62 @@ describe("useUser", () => {
         expect(result.current.user).toBeNull();
       });
     });
+  });
 
-    describe("and has errors", () => {
-      it("user keep null", async () => {
-        mock.onPost("api/auth/signup").reply(500);
-        const { result } = renderHook(() => useUser((state) => state));
+  describe("and has errors", () => {
+    it("user keep null", async () => {
+      mock.onPost("api/auth/signup").reply(500);
+      const { result } = renderHook(() => useUser((state) => state));
 
-        await act(async () => {
-          result.current.signUp({
-            username: "test",
-            email: "email@gmail.com",
-            password: "myPassword",
-          });
+      await act(async () => {
+        result.current.signUp({
+          username: "test",
+          email: "email@gmail.com",
+          password: "myPassword",
         });
+      });
 
-        expect(result.current.user).toBeNull();
+      expect(result.current.user).toBeNull();
+    });
+  });
+});
+
+describe("when call the signin", () => {
+  describe("and has errors", () => {
+    it("user keep null", async () => {
+      mock.onPost("api/auth/signin").reply(500);
+      const { result } = renderHook(() => useUser((state) => state));
+
+      await act(async () => {
+        await result.current.signIn({
+          email: "email@gmail.com",
+          password: "myPassword",
+        });
+      });
+
+      expect(result.current.user).toBeNull();
+    });
+  });
+
+  describe("and has no error", () => {
+    it("updates user store", async () => {
+      const mockSignInResponse = {
+        access_token:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJoeHNnZ3N6In0.APGr-0HcFPgHzTZ1JW9mHx7izzanWCozsBKWY_1pV1o",
+      };
+      mock.onPost("api/auth/signin").reply(200, mockSignInResponse);
+      const { result } = renderHook(() => useUser((state) => state));
+
+      await act(async () => {
+        result.current.signIn({
+          email: "email@gmail.com",
+          password: "myPassword",
+        });
+      });
+
+      expect(result.current.user).toMatchObject({
+        sub: "1234567890",
+        username: "hxsggsz",
       });
     });
   });

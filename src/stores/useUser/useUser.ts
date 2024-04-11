@@ -26,7 +26,6 @@ export const useUser = create<useUserTypes>()((set) => ({
       toast.success("Account created successfully, now sign in");
 
       const decodedUser = decodeJWT(data.access_token);
-      console.log(decodedUser);
       set((state) => ({
         ...state,
         user: decodedUser,
