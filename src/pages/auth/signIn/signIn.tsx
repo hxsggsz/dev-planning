@@ -1,6 +1,7 @@
 import { useUser } from "@/stores/useUser/useUser";
 import SignInForm from "./components/signInForm/signInForm";
 import scss from "./signIn.module.scss";
+import { Link } from "react-router-dom";
 
 function SignIn() {
   const signIn = useUser((state) => state.signIn);
@@ -15,6 +16,10 @@ function SignIn() {
         </p>
 
         <SignInForm signIn={signIn} />
+
+        <Link className={scss.link} to="/auth/signup">
+          Don't have an account? signup
+        </Link>
       </section>
     </main>
   );
