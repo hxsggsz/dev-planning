@@ -6,5 +6,5 @@ export interface useUserTypes {
   user: User | null;
   signUp: (signUpData: AuthType) => Promise<void>;
   signIn: (signInData: SignInTypes) => Promise<void>;
-  updateUser: (roomId: string, onError: (data: string) => void) => void;
+  updateUser: () => void;
 }

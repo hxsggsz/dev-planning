@@ -1,5 +1,4 @@
 import { AuthService } from "@/services/authService/authService";
-import { UserService } from "@/services/userService/userService";
 import { create } from "zustand";
 import { useToast } from "@/stores/useToast/useToast";
 import { AxiosError } from "axios";
@@ -7,12 +6,6 @@ import { useUserTypes } from "./useUser.types";
 import { router } from "@/routes";
 import cookies from "js-cookie";
 import { decodeJWT } from "@/utils/decodeJWT";
-
-const getId = () => {
-  if (typeof window !== "undefined") {
-    return localStorage.getItem("@id");
-  }
-};
 
 export const useUser = create<useUserTypes>()((set) => ({
   user: null,
@@ -28,7 +21,10 @@ export const useUser = create<useUserTypes>()((set) => ({
       const decodedUser = decodeJWT(data.access_token);
       set((state) => ({
         ...state,
-        user: decodedUser,
+        user: {
+          sub: decodedUser.sub,
+          username: decodedUser.username,
+        },
       }));
       router.navigate("/");
     } catch (error) {
@@ -38,6 +34,7 @@ export const useUser = create<useUserTypes>()((set) => ({
       }
     }
   },
+
   signUp: async (signUpData) => {
     const toast = useToast.getState();
 
@@ -52,34 +49,21 @@ export const useUser = create<useUserTypes>()((set) => ({
       }
     }
   },
-  updateUser: async (roomId, onError) => {
-    const myId = getId();
 
-    if (!myId) {
-      onError("User not found");
+  updateUser: () => {
+    const authCookie = cookies.get("_auth");
+    if (!authCookie) {
+      router.navigate("/auth/signup");
       return;
     }
 
-    const { data: dataUser, error: errorUser } = await UserService.findUser(
-      roomId,
-      myId,
-    );
-
-    console.log(dataUser);
-    if (errorUser || !dataUser) {
-      set((state) => ({
-        ...state,
-        status: "error",
-        error: errorUser.message || "user not found",
-      }));
-
-      onError(errorUser.message || "user not found");
-      return;
-    }
-
+    const decodedUser = decodeJWT(authCookie);
     set((state) => ({
       ...state,
-      user: dataUser,
+      user: {
+        sub: decodedUser.sub,
+        username: decodedUser.username,
+      },
     }));
   },
 }));
